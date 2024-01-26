@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "778970187906",
+    "project_id": "devpedia-8231d",
+    "storage_bucket": "devpedia-8231d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:778970187906:android:6730cd228bb3ff20ac4c9b",
+        "android_client_info": {
+          "package_name": "com.example.devpedia"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsq-wLa1OeJWoZZDeWX_ibzZrO87fSnz4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
