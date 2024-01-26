@@ -1,11 +1,24 @@
 // Login screen after the user has successfully registered themselves along with a note for the users who has not registred redirecting them to the registration screen.
 
+import 'package:devpedia/auth/auth_provider.dart';
+import 'package:devpedia/screens/dashboard_screen.dart';
 import 'package:devpedia/screens/register_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends ConsumerStatefulWidget {
+  @override
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authStateChangesProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Login'),
@@ -22,8 +35,9 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
             TextField(
+              controller: emailController,
               decoration: InputDecoration(
-                labelText: 'Username',
+                labelText: 'Enter your Email',
                 border: OutlineInputBorder(),
                 filled: true,
                 fillColor: Colors.grey[200],
@@ -31,8 +45,9 @@ class LoginScreen extends StatelessWidget {
             ),
             SizedBox(height: 10),
             TextField(
+              controller: passwordController,
               decoration: InputDecoration(
-                labelText: 'Password',
+                labelText: 'Enter your Password',
                 border: OutlineInputBorder(),
                 filled: true,
                 fillColor: Colors.grey[200],
@@ -49,8 +64,16 @@ class LoginScreen extends StatelessWidget {
                 'Login',
                 style: TextStyle(fontSize: 18),
               ),
-              onPressed: () {
-                // Implement your login logic here
+              onPressed: () async {
+                final email = emailController.text.trim();
+                final password = passwordController.text.trim();
+
+                await ref.read(authRepositoryProvider).signIn(email, password);
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => DashboardScreen()),
+                  (route) => false,
+                );
               },
             ),
             SizedBox(height: 10),

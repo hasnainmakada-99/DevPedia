@@ -21,8 +21,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authStateChangesProvider);
-    final currentUser = ref.watch(currentUserProvider);
-    // The logo
+
     final Widget logo = Container(
       margin: EdgeInsets.only(bottom: 20),
       child: FlutterLogo(
@@ -84,6 +83,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             );
             return;
           }
+
           if (password != confirmPassword) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -93,14 +93,28 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             return;
           } else {
             try {
-              await ref.read(authRepositoryProvider).signup(email, password);
+              if (authState.value!.email == email) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('User already exists.'),
+                  ),
+                );
+                return;
+              }
+              await ref.read(authRepositoryProvider).signUp(
+                    email,
+                    password,
+                    ref,
+                  );
+
+              // ignore: use_build_context_synchronously
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => LoginScreen()),
                 (route) => false,
               );
             } catch (e) {
-              throw e;
+              rethrow;
             }
           }
         },
