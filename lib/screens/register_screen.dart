@@ -1,11 +1,27 @@
+import 'package:devpedia/auth/auth_provider.dart';
 import 'package:devpedia/screens/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RegisterScreen extends StatelessWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+class RegisterScreen extends ConsumerStatefulWidget {
+  RegisterScreen({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends ConsumerState<RegisterScreen> {
+  final TextEditingController emailController = TextEditingController();
+
+  final TextEditingController passwordController = TextEditingController();
+
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authStateChangesProvider);
+    final currentUser = ref.watch(currentUserProvider);
     // The logo
     final Widget logo = Container(
       margin: EdgeInsets.only(bottom: 20),
@@ -20,26 +36,29 @@ class RegisterScreen extends StatelessWidget {
       child: Column(
         children: [
           TextFormField(
+            controller: emailController,
             decoration: InputDecoration(
-              labelText: 'Username',
+              labelText: 'Enter your Email',
               border: OutlineInputBorder(),
             ),
             style: TextStyle(fontSize: 16),
           ),
           SizedBox(height: 10),
           TextFormField(
+            controller: passwordController,
             obscureText: true,
             decoration: InputDecoration(
-              labelText: 'Password',
+              labelText: 'Enter your Password',
               border: OutlineInputBorder(),
             ),
             style: TextStyle(fontSize: 16),
           ),
           SizedBox(height: 10),
           TextFormField(
+            controller: confirmPasswordController,
             obscureText: true,
             decoration: InputDecoration(
-              labelText: 'Confirm Password',
+              labelText: 'Confirm your Password',
               border: OutlineInputBorder(),
             ),
             style: TextStyle(fontSize: 16),
@@ -53,7 +72,38 @@ class RegisterScreen extends StatelessWidget {
       width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 20),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () async {
+          final email = emailController.text;
+          final password = passwordController.text;
+          final confirmPassword = confirmPasswordController.text;
+          if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Please fill in all the fields.'),
+              ),
+            );
+            return;
+          }
+          if (password != confirmPassword) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Passwords do not match.'),
+              ),
+            );
+            return;
+          } else {
+            try {
+              await ref.read(authRepositoryProvider).signup(email, password);
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+                (route) => false,
+              );
+            } catch (e) {
+              throw e;
+            }
+          }
+        },
         child: Text(
           'Register',
           style: TextStyle(fontSize: 18),
@@ -63,39 +113,40 @@ class RegisterScreen extends StatelessWidget {
 
     // The registration screen
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Register'),
-        ),
-        body: Center(
-          child: SingleChildScrollView(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(height: 40),
-                  logo,
-                  SizedBox(height: 20),
-                  form,
-                  SizedBox(height: 20),
-                  registerButton,
-                  SizedBox(height: 40),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      backgroundColor: Colors.white,
-                    ),
-                    child: Text('Not registered yet? Register now.'),
-                    onPressed: () {
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()),
-                        (route) => false,
-                      );
-                    },
+      appBar: AppBar(
+        title: Text('Register'),
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: 40),
+                logo,
+                SizedBox(height: 20),
+                form,
+                SizedBox(height: 20),
+                registerButton,
+                SizedBox(height: 40),
+                TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.white,
                   ),
-                ],
-              ),
+                  child: Text('Not registered yet? Register now.'),
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                      (route) => false,
+                    );
+                  },
+                ),
+              ],
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
