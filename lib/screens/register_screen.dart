@@ -1,5 +1,7 @@
 import 'package:devpedia/auth/auth_provider.dart';
+import 'package:devpedia/screens/dashboard_screen.dart';
 import 'package:devpedia/screens/login_screen.dart';
+import 'package:devpedia/utils/alertDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -94,12 +96,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           } else {
             try {
               if (authState.value!.email == email) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('User already exists.'),
-                  ),
-                );
-                return;
+                return showAlert(
+                    context, 'User already exists with Different Credential');
               }
               await ref.read(authRepositoryProvider).signUp(
                     email,
@@ -110,7 +108,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               // ignore: use_build_context_synchronously
               Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => LoginScreen()),
+                MaterialPageRoute(builder: (context) => DashboardScreen()),
                 (route) => false,
               );
             } catch (e) {
@@ -136,18 +134,18 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 40),
+                const SizedBox(height: 40),
                 logo,
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 form,
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 registerButton,
-                SizedBox(height: 40),
+                const SizedBox(height: 40),
                 TextButton(
                   style: TextButton.styleFrom(
                     backgroundColor: Colors.white,
                   ),
-                  child: Text('Not registered yet? Register now.'),
+                  child: Text('Already have an account? Login'),
                   onPressed: () {
                     Navigator.pushAndRemoveUntil(
                       context,

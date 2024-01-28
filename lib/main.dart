@@ -1,6 +1,10 @@
+import 'package:devpedia/auth/auth_provider.dart';
 import 'package:devpedia/firebase_options.dart';
+import 'package:devpedia/screens/dashboard_screen.dart';
 import 'package:devpedia/screens/login_screen.dart';
 import 'package:devpedia/screens/register_screen.dart';
+import 'package:devpedia/utils/alertDialog.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,7 +13,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(
-    const ProviderScope(
+    ProviderScope(
       child: MyApp(),
     ),
   );
@@ -32,16 +36,63 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends ConsumerStatefulWidget {
   const MyHomePage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends ConsumerState<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return LoginScreen();
+    // return StreamBuilder<User?>(
+    //   stream: FirebaseAuth.instance.authStateChanges(),
+    //   builder: (context, snapshot) {
+    //     if (snapshot.connectionState == ConnectionState.waiting) {
+    //       return const Scaffold(
+    //         body: CircularProgressIndicator(),
+    //       );
+    //     } else if (snapshot.hasData) {
+    //       return const DashboardScreen();
+    //     } else if (snapshot.hasError) {
+    //       return Scaffold(
+    //         body: Center(
+    //           child: Text(snapshot.error.toString()),
+    //         ),
+    //       );
+    //     } else {
+    //       return LoginScreen();
+    //     }
+    //   },
+    // );
+
+    // return RegisterScreen();
+
+    final authState = ref.watch(authStateChangesProvider);
+
+    return authState.when(
+      data: (data) {
+        if (data != null) {
+          return const DashboardScreen();
+        } else {
+          return LoginScreen();
+        }
+      },
+      error: (error, stackTrace) {
+        return Scaffold(
+          body: Center(
+            child: Text(error.toString()),
+          ),
+        );
+      },
+      loading: () {
+        return const Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      },
+    );
   }
 }

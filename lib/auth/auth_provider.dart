@@ -23,12 +23,12 @@ class AuthRepository {
         email: email,
         password: password,
       );
-    } on FirebaseAuthException catch (e) {
-      // ignore: unrelated_type_equality_checks
-      if (e == 'account-exists-with-different-credential') {
-        log("User already exists with different credential");
-        // ignore: unrelated_type_equality_checks
-      } else if (e == 'invalid-credential') {}
+      // } on FirebaseAuthException catch (e) {
+      //   // ignore: unrelated_type_equality_checks
+      //   if (e == 'account-exists-with-different-credential') {
+      //     log("User already exists with different credential");
+      //     // ignore: unrelated_type_equality_checks
+      //   } else if (e == 'invalid-credential') {}
     } catch (e) {
       log(e.toString());
       rethrow;
