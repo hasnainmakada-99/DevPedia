@@ -28,8 +28,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           children: <Widget>[
             Container(
               margin: EdgeInsets.only(bottom: 20),
-              child: FlutterLogo(
-                size: 100,
+              child: CircleAvatar(
+                backgroundImage: AssetImage(
+                  'assets/devpedia_logo.png',
+                ),
+                radius: 90,
               ),
             ),
             TextField(

@@ -26,8 +26,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
     final Widget logo = Container(
       margin: EdgeInsets.only(bottom: 20),
-      child: FlutterLogo(
-        size: 100,
+      child: CircleAvatar(
+        backgroundImage: AssetImage('assets/devpedia_logo.png'),
+        radius: 100,
       ),
     );
 

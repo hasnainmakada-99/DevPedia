@@ -46,35 +46,12 @@ class MyHomePage extends ConsumerStatefulWidget {
 class _MyHomePageState extends ConsumerState<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    // return StreamBuilder<User?>(
-    //   stream: FirebaseAuth.instance.authStateChanges(),
-    //   builder: (context, snapshot) {
-    //     if (snapshot.connectionState == ConnectionState.waiting) {
-    //       return const Scaffold(
-    //         body: CircularProgressIndicator(),
-    //       );
-    //     } else if (snapshot.hasData) {
-    //       return const DashboardScreen();
-    //     } else if (snapshot.hasError) {
-    //       return Scaffold(
-    //         body: Center(
-    //           child: Text(snapshot.error.toString()),
-    //         ),
-    //       );
-    //     } else {
-    //       return LoginScreen();
-    //     }
-    //   },
-    // );
-
-    // return RegisterScreen();
-
     final authState = ref.watch(authStateChangesProvider);
 
     return authState.when(
       data: (data) {
         if (data != null) {
-          return const DashboardScreen();
+          return DashboardScreen();
         } else {
           return LoginScreen();
         }
