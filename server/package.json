@@ -1,0 +1,25 @@
+{
+  "name": "devpedia",
+  "version": "1.0.0",
+  "description": "API used to fetch resources into the main app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hasnainmakada-99/DevPedia.git"
+  },
+  "keywords": [
+    "flutter",
+    "devops",
+    "nodejs",
+    "firebase"
+  ],
+  "author": "Hasnain Makada",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hasnainmakada-99/DevPedia/issues"
+  },
+  "homepage": "https://github.com/hasnainmakada-99/DevPedia#readme"
+}
