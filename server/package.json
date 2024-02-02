@@ -4,7 +4,8 @@
   "description": "API used to fetch resources into the main app",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "npx nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -21,5 +22,9 @@
   "bugs": {
     "url": "https://github.com/hasnainmakada-99/DevPedia/issues"
   },
-  "homepage": "https://github.com/hasnainmakada-99/DevPedia#readme"
+  "homepage": "https://github.com/hasnainmakada-99/DevPedia#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2"
+  }
 }
