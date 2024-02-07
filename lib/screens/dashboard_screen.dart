@@ -1,9 +1,10 @@
 import 'package:devpedia/auth/auth_provider.dart';
+import 'package:devpedia/modals/resource_modal.dart';
+import 'package:devpedia/resources%20screens/aws.dart';
+import 'package:devpedia/resources%20screens/jenkins.dart';
 import 'package:devpedia/utils/alertDialog.dart';
-import 'package:devpedia/utils/resource_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:dio/dio.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({super.key});
@@ -14,31 +15,14 @@ class DashboardScreen extends ConsumerStatefulWidget {
 }
 
 class _DashboardScreenState extends ConsumerState<DashboardScreen> {
-  // ignore: non_constant_identifier_names
-
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
-  List<Widget> _widgets = List.generate(2, (index) => ResourceCard());
-
-  List<Widget> _generateListCards(List<String> items) {
-    return List.generate(3, (index) => ResourceCard());
-  }
-
-  List<Widget> _generateListTiles(List<String> items) {
-    return items.map((item) {
-      final index = items.indexOf(item);
-      return ListTile(
-        title: Text(item),
-        selected: _selectedIndex == index,
-        onTap: () {
-          _onItemTapped(index);
-          Navigator.pop(context);
-        },
-      );
-    }).toList();
-  }
+  List<Widget> _widgetOptions = <Widget>[
+    JenkinsResources(),
+    awsresources(),
+  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -50,12 +34,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   Widget build(BuildContext context) {
     final authStateChangesNotifier = ref.watch(authStateChangesProvider);
 
-    // Replace this with your API response
-    final apiResponse = ['Travis CI', 'Circle CI', 'Jenkins'];
-
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dashboard'),
+        title: Text('DevPedia'),
         actions: [
           IconButton(
             icon: Icon(Icons.logout),
@@ -66,7 +47,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         ],
       ),
       body: Center(
-        child: _widgets.elementAt(_selectedIndex),
+        child: _widgetOptions.elementAt(_selectedIndex),
       ),
       drawer: Drawer(
         child: ListView(
@@ -75,28 +56,31 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           children: [
             DrawerHeader(
               decoration: BoxDecoration(color: Colors.black87),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Explore various DevOps Tools',
-                    style: TextStyle(color: Colors.white, fontSize: 24),
-                  ),
-                  const SizedBox(height: 8),
-                  Consumer(
-                    builder: (context, watch, child) {
-                      final user = ref.watch(authStateChangesProvider).value;
-                      final email = user!.email ?? 'Username not found';
-                      return Text(
-                        email,
-                        style: const TextStyle(color: Colors.white),
-                      );
-                    },
-                  ),
-                ],
+              child: Text(
+                'Explore various DevOps Tools',
+                style: const TextStyle(color: Colors.white, fontSize: 24),
               ),
             ),
-            ..._generateListTiles(apiResponse),
+            ListTile(
+              title: const Text('Jenkins Resources'),
+              selected: _selectedIndex == 0,
+              onTap: () {
+                // Update the state of the app
+                _onItemTapped(0);
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('AWS Resources'),
+              selected: _selectedIndex == 1,
+              onTap: () {
+                // Update the state of the app
+                _onItemTapped(1);
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
           ],
         ),
       ),

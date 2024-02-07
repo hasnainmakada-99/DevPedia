@@ -1,6 +1,7 @@
 import 'package:devpedia/auth/auth_provider.dart';
 import 'package:devpedia/firebase_options.dart';
 import 'package:devpedia/screens/dashboard_screen.dart';
+
 import 'package:devpedia/screens/login_screen.dart';
 import 'package:devpedia/screens/register_screen.dart';
 import 'package:devpedia/utils/alertDialog.dart';

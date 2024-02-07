@@ -29,7 +29,6 @@ mongoose
   .catch((err) => {
     console.error("Error connecting to MongoDB:", err);
   });
-
 const resourceSchema = new mongoose.Schema({
   title: String,
   url: String,
@@ -37,7 +36,8 @@ const resourceSchema = new mongoose.Schema({
   thumbnail: String,
   publishedDate: String,
   channelName: String,
-  tool: String,
+  type: String,
+  toolRelatedTo: String,
 });
 
 const Resources = mongoose.model("Resource", resourceSchema);
@@ -45,14 +45,12 @@ const Resources = mongoose.model("Resource", resourceSchema);
 app.post("/api/post-resources", async (req, res) => {
   try {
     const formData = req.body;
-
     console.log(formData);
-
-    const resource = new Resources(formData);
+    const resource =  new Resources(formData);
     await resource.save();
     res.json({ message: "Your Resource has been posted successfully" });
   } catch (error) {
-    console.error(err);
+    console.error(error);
     res.status(500).send("Error saving resource.");
   }
 });
