@@ -1,18 +1,17 @@
 import 'package:devpedia/modals/fetch_resources.dart';
 import 'package:devpedia/modals/resource_modal.dart';
 import 'package:devpedia/utils/resource_card.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 
-// ignore: camel_case_types
-class awsresources extends StatefulWidget {
-  const awsresources({super.key});
+class AllResources extends ConsumerStatefulWidget {
+  const AllResources({super.key});
 
   @override
-  State<awsresources> createState() => _awsresourcesState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _AllResourcesState();
 }
 
-// ignore: camel_case_types
-class _awsresourcesState extends State<awsresources> {
+class _AllResourcesState extends ConsumerState<AllResources> {
   late final Stream<List<ResourceModal>> resources;
   @override
   void initState() {
@@ -34,16 +33,13 @@ class _awsresourcesState extends State<awsresources> {
         stream: resources,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            final jenkinsResources = snapshot.data!
-                .where(
-                    (resource) => resource.tool?.trim().toLowerCase() == 'aws')
-                .toList();
+            final fetchedResources = snapshot.data!.toList();
 
-            if (jenkinsResources.isNotEmpty) {
+            if (fetchedResources.isNotEmpty) {
               return ListView.builder(
-                itemCount: jenkinsResources.length,
+                itemCount: fetchedResources.length,
                 itemBuilder: (context, index) {
-                  final snapshotData = jenkinsResources[index];
+                  final snapshotData = fetchedResources[index];
                   return ResourceCard(
                     imageUrl: snapshotData.thumbnail.toString(),
                     title: snapshotData.title.toString(),
@@ -55,13 +51,12 @@ class _awsresourcesState extends State<awsresources> {
               );
             } else {
               return const Center(
-                child: Text('No resources found'),
+                child: Text('No resources available currently'),
               );
             }
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
           }
-
           // By default, show a loading spinner.
           return const CircularProgressIndicator();
         },

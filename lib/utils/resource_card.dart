@@ -19,10 +19,12 @@ class ResourceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: const EdgeInsets.all(15),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(9),
       ),
       clipBehavior: Clip.antiAliasWithSaveLayer,
+      elevation: 5,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -37,7 +39,7 @@ class ResourceCard extends StatelessWidget {
                 height: 160,
                 width: double.infinity,
                 color: Colors.grey[200],
-                child: Center(
+                child: const Center(
                   child: Text('Error loading image'),
                 ),
               );
@@ -98,7 +100,7 @@ class ResourceCard extends StatelessWidget {
           ),
           Container(height: 5),
         ],
-      ),
+      ), // This adds the shadow to the card
     );
   }
 }

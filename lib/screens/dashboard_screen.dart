@@ -1,5 +1,6 @@
 import 'package:devpedia/auth/auth_provider.dart';
 import 'package:devpedia/modals/resource_modal.dart';
+import 'package:devpedia/resources%20screens/all_resources.dart';
 import 'package:devpedia/resources%20screens/aws.dart';
 import 'package:devpedia/resources%20screens/jenkins.dart';
 import 'package:devpedia/utils/alertDialog.dart';
@@ -16,10 +17,9 @@ class DashboardScreen extends ConsumerStatefulWidget {
 
 class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
-  List<Widget> _widgetOptions = <Widget>[
+  final List<Widget> _widgetOptions = const <Widget>[
+    AllResources(),
     JenkinsResources(),
     awsresources(),
   ];
@@ -36,10 +36,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('DevPedia'),
+        title: const Text('DevPedia'),
         actions: [
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
             onPressed: () {
               ref.watch(authRepositoryProvider).signOut();
             },
@@ -55,14 +55,24 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
-              decoration: BoxDecoration(color: Colors.black87),
-              child: Text(
-                'Explore various DevOps Tools',
-                style: const TextStyle(color: Colors.white, fontSize: 24),
+              decoration: const BoxDecoration(color: Colors.black87),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Explore various DevOps Tools',
+                    style: TextStyle(color: Colors.white, fontSize: 24),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    '${authStateChangesNotifier.value!.email}',
+                    style: const TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                ],
               ),
             ),
             ListTile(
-              title: const Text('Jenkins Resources'),
+              title: const Text('Latest Resources'),
               selected: _selectedIndex == 0,
               onTap: () {
                 // Update the state of the app
@@ -72,11 +82,21 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               },
             ),
             ListTile(
-              title: const Text('AWS Resources'),
+              title: const Text('Jenkins Resources'),
               selected: _selectedIndex == 1,
               onTap: () {
                 // Update the state of the app
                 _onItemTapped(1);
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('AWS Resources'),
+              selected: _selectedIndex == 2,
+              onTap: () {
+                // Update the state of the app
+                _onItemTapped(2);
                 // Then close the drawer
                 Navigator.pop(context);
               },

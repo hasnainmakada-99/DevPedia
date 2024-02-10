@@ -10,43 +10,60 @@ class JenkinsResources extends StatefulWidget {
   State<JenkinsResources> createState() => _JenkinsResourcesState();
 }
 
-late Future<List<ResourceModal>> resources;
-
 class _JenkinsResourcesState extends State<JenkinsResources> {
+  late final Stream<List<ResourceModal>> resources;
   @override
   void initState() {
-    // TODO: implement initState
+    super.initState();
     resources = fetchVideos();
+  }
+
+  Future<void> refreshVideos() async {
+    setState(() {
+      resources = fetchVideos();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<ResourceModal>>(
-      future: resources,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) {
-              final snapshotData = snapshot.data![index];
-              return snapshotData.tool?.toLowerCase() == 'aws'
-                  ? ResourceCard(
-                      imageUrl: snapshotData.thumbnail.toString(),
-                      title: snapshotData.title.toString(),
-                      description: snapshotData.description.toString(),
-                      shareLink: "No link",
-                      exploreLink: 'No Link',
-                    )
-                  : const Center(child: Text('The End :)'));
-            },
-          );
-        } else if (snapshot.hasError) {
-          return Text("${snapshot.error}");
-        }
+    return RefreshIndicator(
+      onRefresh: refreshVideos,
+      child: StreamBuilder<List<ResourceModal>>(
+        stream: resources,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final jenkinsResources = snapshot.data!
+                .where((resource) =>
+                    resource.tool?.trim().toLowerCase() == 'jenkins')
+                .toList();
 
-        // By default, show a loading spinner.
-        return CircularProgressIndicator();
-      },
+            if (jenkinsResources.isNotEmpty) {
+              return ListView.builder(
+                itemCount: jenkinsResources.length,
+                itemBuilder: (context, index) {
+                  final snapshotData = jenkinsResources[index];
+                  return ResourceCard(
+                    imageUrl: snapshotData.thumbnail.toString(),
+                    title: snapshotData.title.toString(),
+                    description: snapshotData.description.toString(),
+                    shareLink: "No link",
+                    exploreLink: 'No Link',
+                  );
+                },
+              );
+            } else {
+              return const Center(
+                child: Text('No resources found'),
+              );
+            }
+          } else if (snapshot.hasError) {
+            return Text("${snapshot.error}");
+          }
+
+          // By default, show a loading spinner.
+          return const CircularProgressIndicator();
+        },
+      ),
     );
   }
 }
