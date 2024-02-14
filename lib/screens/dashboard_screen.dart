@@ -1,9 +1,9 @@
 import 'package:devpedia/auth/auth_provider.dart';
-import 'package:devpedia/modals/resource_modal.dart';
+
 import 'package:devpedia/resources%20screens/all_resources.dart';
 import 'package:devpedia/resources%20screens/aws.dart';
 import 'package:devpedia/resources%20screens/jenkins.dart';
-import 'package:devpedia/utils/alertDialog.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

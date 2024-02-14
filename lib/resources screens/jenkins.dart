@@ -1,5 +1,6 @@
 import 'package:devpedia/modals/fetch_resources.dart';
 import 'package:devpedia/modals/resource_modal.dart';
+import 'package:devpedia/others/resource_info.dart';
 import 'package:devpedia/utils/resource_card.dart';
 import 'package:flutter/material.dart';
 
@@ -43,6 +44,17 @@ class _JenkinsResourcesState extends State<JenkinsResources> {
                 itemBuilder: (context, index) {
                   final snapshotData = jenkinsResources[index];
                   return ResourceCard(
+                    navigateTo: () {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ResourceInfo(
+                            resourceURL: snapshotData.url.toString(),
+                          ),
+                        ),
+                        (route) => true,
+                      );
+                    },
                     imageUrl: snapshotData.thumbnail.toString(),
                     title: snapshotData.title.toString(),
                     description: snapshotData.description.toString(),

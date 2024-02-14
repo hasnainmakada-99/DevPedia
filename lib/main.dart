@@ -52,7 +52,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     return authState.when(
       data: (data) {
         if (data != null) {
-          return DashboardScreen();
+          return const DashboardScreen();
         } else {
           return LoginScreen();
         }

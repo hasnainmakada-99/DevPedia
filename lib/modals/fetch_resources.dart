@@ -4,7 +4,8 @@ import 'package:dio/dio.dart';
 
 Stream<List<ResourceModal>> fetchVideos() async* {
   var dio = Dio();
-  final response = await dio.get('http://192.168.79.80:3000/api/get-resources');
+  final response =
+      await dio.get('http://192.168.225.80:3000/api/get-resources');
 
   if (response.statusCode == 200) {
     // If the server returns a 200 OK response, parse the JSON.

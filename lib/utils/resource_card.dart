@@ -6,6 +6,7 @@ class ResourceCard extends StatelessWidget {
   final String description;
   final String shareLink;
   final String exploreLink;
+  final Function navigateTo;
 
   const ResourceCard({
     Key? key,
@@ -14,6 +15,7 @@ class ResourceCard extends StatelessWidget {
     required this.description,
     required this.shareLink,
     required this.exploreLink,
+    required this.navigateTo,
   }) : super(key: key);
 
   @override
@@ -25,82 +27,87 @@ class ResourceCard extends StatelessWidget {
       ),
       clipBehavior: Clip.antiAliasWithSaveLayer,
       elevation: 5,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Image.network(
-            imageUrl,
-            height: 160,
-            width: double.infinity,
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) {
-              // Handle image loading errors (e.g., show placeholder)
-              return Container(
-                height: 160,
-                width: double.infinity,
-                color: Colors.grey[200],
-                child: const Center(
-                  child: Text('Error loading image'),
-                ),
-              );
-            },
-          ),
-          Container(
-            padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: Colors.grey[800],
+      child: InkWell(
+        onTap: () => navigateTo(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Image.network(
+              imageUrl,
+              height: 160,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                // Handle image loading errors (e.g., show placeholder)
+                return Container(
+                  height: 160,
+                  width: double.infinity,
+                  color: Colors.grey[200],
+                  child: const Center(
+                    child: Text('Error loading image'),
                   ),
-                ),
-                Container(height: 10),
-                Text(
-                  description,
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.grey[700],
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        foregroundColor: Colors.transparent,
-                      ),
-                      child: Text(
-                        "SHARE",
-                        style: TextStyle(color: Colors.blue),
-                      ),
-                      onPressed: () {
-                        // Handle share action
-                        // launchUrl(Uri.parse(shareLink));
-                      },
-                    ),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        foregroundColor: Colors.transparent,
-                      ),
-                      child: Text(
-                        "EXPLORE",
-                        style: TextStyle(color: Colors.blue),
-                      ),
-                      onPressed: () {
-                        // Handle explore action
-                      },
-                    ),
-                  ],
-                ),
-              ],
+                );
+              },
             ),
-          ),
-          Container(height: 5),
-        ],
-      ), // This adds the shadow to the card
+            Container(
+              padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: Colors.grey[800],
+                    ),
+                  ),
+                  Container(height: 10),
+                  Text(
+                    description.length > 60
+                        ? '${description.substring(0, 60)}...'
+                        : description,
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.transparent,
+                        ),
+                        child: Text(
+                          "SHARE",
+                          style: TextStyle(color: Colors.blue),
+                        ),
+                        onPressed: () {
+                          // Handle share action
+                          // launchUrl(Uri.parse(shareLink));
+                        },
+                      ),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.transparent,
+                        ),
+                        child: Text(
+                          "EXPLORE",
+                          style: TextStyle(color: Colors.blue),
+                        ),
+                        onPressed: () {
+                          // Handle explore action
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Container(height: 5),
+          ],
+        ), // This adds the shadow to the card
+      ),
     );
   }
 }
