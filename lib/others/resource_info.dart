@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ResourceInfo extends ConsumerStatefulWidget {
+  final String resourceTitle;
   final String resourceURL;
-  const ResourceInfo({Key? key, required this.resourceURL}) : super(key: key);
+  final String resourceDescription;
+  const ResourceInfo({
+    Key? key,
+    required this.resourceURL,
+    required this.resourceDescription,
+    required this.resourceTitle,
+  }) : super(key: key);
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ResourceInfoState();
@@ -12,15 +21,16 @@ class ResourceInfo extends ConsumerStatefulWidget {
 
 class _ResourceInfoState extends ConsumerState<ResourceInfo> {
   late YoutubePlayerController _controller;
-
+  var ratingText = '';
   @override
   void initState() {
     super.initState();
     _controller = YoutubePlayerController(
       initialVideoId: YoutubePlayer.convertUrlToId(widget.resourceURL)!,
       flags: const YoutubePlayerFlags(
-        autoPlay: true,
+        autoPlay: false,
         mute: false,
+        showLiveFullscreenButton: true,
       ),
     );
   }
@@ -35,7 +45,7 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Testing 1'),
+        title: Text(widget.resourceTitle),
         automaticallyImplyLeading: !_controller.value.isFullScreen,
       ),
       body: Column(
@@ -59,17 +69,56 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo> {
                   children: [
                     player,
                     // Add video description here
-                    const Text('Video Description'),
+                    Text(
+                      widget.resourceDescription,
+                      style: GoogleFonts.lato(
+                        textStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(
+                      height: 10,
+                    ),
+
+                    Text("Channel Name: FreecodeCamp"),
+                    SizedBox(
+                      height: 10,
+                    ),
+
+                    Text("Published Date: 12-20-3022"),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text("Please rate the resource"),
+                    RatingBar.builder(
+                      initialRating: 0,
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      allowHalfRating: true,
+                      itemCount: 5,
+                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                      itemBuilder: (context, _) => Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      onRatingUpdate: (rating) {
+                        setState(() {
+                          ratingText = rating.toString();
+                        });
+                      },
+                    ),
+
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text('data: $ratingText')
                   ],
                 );
               },
             ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              _controller.toggleFullScreenMode();
-            },
-            child: const Text('Enter Full Screen'),
           ),
         ],
       ),

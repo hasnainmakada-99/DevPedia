@@ -47,7 +47,10 @@ class _AllResourcesState extends ConsumerState<AllResources> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => ResourceInfo(
+                            resourceTitle: snapshotData.title.toString(),
                             resourceURL: snapshotData.url.toString(),
+                            resourceDescription:
+                                snapshotData.description.toString(),
                           ),
                         ),
                         (route) => true,

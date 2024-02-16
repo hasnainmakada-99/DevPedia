@@ -48,6 +48,4 @@ class AuthRepository {
       log(e.toString());
     }
   }
-
-  // ... other authentication methods
 }
