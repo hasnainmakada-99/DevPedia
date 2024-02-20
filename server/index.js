@@ -36,7 +36,6 @@ const resourceSchema = new mongoose.Schema({
   thumbnail: String,
   publishedDate: String,
   channelName: String,
-  type: String,
   toolRelatedTo: String,
 });
 
