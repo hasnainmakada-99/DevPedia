@@ -14,9 +14,7 @@ class RegisterScreen extends ConsumerStatefulWidget {
 
 class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final TextEditingController emailController = TextEditingController();
-
   final TextEditingController passwordController = TextEditingController();
-
   final TextEditingController confirmPasswordController =
       TextEditingController();
 
@@ -25,7 +23,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     final authState = ref.watch(authStateChangesProvider);
 
     final Widget logo = Container(
-      margin: EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 20),
       child: CircleAvatar(
         backgroundImage: AssetImage('assets/devpedia_logo.png'),
         radius: 100,
@@ -80,7 +78,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           final confirmPassword = confirmPasswordController.text;
           if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
+              const SnackBar(
                 content: Text('Please fill in all the fields.'),
               ),
             );
@@ -89,14 +87,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
           if (password != confirmPassword) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
+              const SnackBar(
                 content: Text('Passwords do not match.'),
               ),
             );
             return;
           } else {
             try {
-              if (authState.value!.email == email) {
+              if (authState.value != null && authState.value!.email == email) {
                 return showAlert(
                     context, 'User already exists with Different Credential');
               }
@@ -109,7 +107,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               // ignore: use_build_context_synchronously
               Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => DashboardScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const DashboardScreen()),
                 (route) => false,
               );
             } catch (e) {
@@ -117,7 +116,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             }
           }
         },
-        child: Text(
+        child: const Text(
           'Register',
           style: TextStyle(fontSize: 18),
         ),
@@ -127,7 +126,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     // The registration screen
     return Scaffold(
       appBar: AppBar(
-        title: Text('Register'),
+        title: const Text('Register'),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -146,7 +145,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   style: TextButton.styleFrom(
                     backgroundColor: Colors.white,
                   ),
-                  child: Text('Already have an account? Login'),
+                  child: const Text('Already have an account? Login'),
                   onPressed: () {
                     Navigator.pushAndRemoveUntil(
                       context,

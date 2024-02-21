@@ -1,3 +1,4 @@
+import 'package:devpedia/utils/ratings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -99,6 +100,24 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo> {
                       height: 10,
                     ),
                     Text("Please rate the resource"),
+                    // RatingBar.builder(
+                    //   initialRating: 0,
+                    //   minRating: 1,
+                    //   direction: Axis.horizontal,
+                    //   allowHalfRating: true,
+                    //   itemCount: 5,
+                    //   itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                    //   itemBuilder: (context, _) => Icon(
+                    //     Icons.star,
+                    //     color: Colors.amber,
+                    //   ),
+                    //   onRatingUpdate: (rating) {
+                    //     setState(() {
+                    //       ratingText = rating.toString();
+                    //     });
+                    //   },
+                    // ),
+
                     RatingBar.builder(
                       initialRating: 0,
                       minRating: 1,
@@ -111,9 +130,9 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo> {
                         color: Colors.amber,
                       ),
                       onRatingUpdate: (rating) {
-                        setState(() {
-                          ratingText = rating.toString();
-                        });
+                        print(rating);
+                        // Here you can call the function to store the rating in Firebase
+                        storeRating(rating);
                       },
                     ),
 

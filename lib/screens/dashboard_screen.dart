@@ -3,12 +3,13 @@ import 'package:devpedia/auth/auth_provider.dart';
 import 'package:devpedia/resources%20screens/all_resources.dart';
 import 'package:devpedia/resources%20screens/aws.dart';
 import 'package:devpedia/resources%20screens/jenkins.dart';
+import 'package:devpedia/screens/login_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
-  const DashboardScreen({super.key});
+  const DashboardScreen({Key? key}) : super(key: key);
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -40,9 +41,18 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: () {
-              ref.watch(authRepositoryProvider).signOut();
-            },
+            onPressed: authStateChangesNotifier.value != null
+                ? () {
+                    ref.watch(authRepositoryProvider).signOut();
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LoginScreen(),
+                      ),
+                      (route) => false,
+                    );
+                  }
+                : null,
           ),
         ],
       ),
@@ -65,7 +75,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    '${authStateChangesNotifier.value!.email}',
+                    '${authStateChangesNotifier.value?.email ?? ''}',
                     style: const TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ],
