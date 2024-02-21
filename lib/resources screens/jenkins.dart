@@ -3,15 +3,17 @@ import 'package:devpedia/modals/resource_modal.dart';
 import 'package:devpedia/others/resource_info.dart';
 import 'package:devpedia/utils/resource_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class JenkinsResources extends StatefulWidget {
+class JenkinsResources extends ConsumerStatefulWidget {
   const JenkinsResources({super.key});
 
   @override
-  State<JenkinsResources> createState() => _JenkinsResourcesState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _JenkinsResourcesState();
 }
 
-class _JenkinsResourcesState extends State<JenkinsResources> {
+class _JenkinsResourcesState extends ConsumerState<JenkinsResources> {
   late final Stream<List<ResourceModal>> resources;
   @override
   void initState() {
@@ -64,8 +66,7 @@ class _JenkinsResourcesState extends State<JenkinsResources> {
                     imageUrl: snapshotData.thumbnail.toString(),
                     title: snapshotData.title.toString(),
                     description: snapshotData.description.toString(),
-                    shareLink: "No link",
-                    exploreLink: 'No Link',
+                    shareLink: snapshotData.url.toString(),
                   );
                 },
               );

@@ -3,17 +3,18 @@ import 'package:devpedia/modals/resource_modal.dart';
 import 'package:devpedia/others/resource_info.dart';
 import 'package:devpedia/utils/resource_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // ignore: camel_case_types
-class awsresources extends StatefulWidget {
+class awsresources extends ConsumerStatefulWidget {
   const awsresources({super.key});
 
   @override
-  State<awsresources> createState() => _awsresourcesState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _awsresourcesState();
 }
 
 // ignore: camel_case_types
-class _awsresourcesState extends State<awsresources> {
+class _awsresourcesState extends ConsumerState<awsresources> {
   late final Stream<List<ResourceModal>> resources;
   @override
   void initState() {
@@ -50,24 +51,23 @@ class _awsresourcesState extends State<awsresources> {
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ResourceInfo(
-                                  channelName:
-                                      snapshotData.channelName.toString(),
-                                  publishedDate:
-                                      snapshotData.publishedDate.toString(),
-                                  resourceTitle: snapshotData.title.toString(),
-                                  resourceURL: snapshotData.url.toString(),
-                                  resourceDescription:
-                                      snapshotData.description.toString(),
-                                )),
+                          builder: (context) => ResourceInfo(
+                            channelName: snapshotData.channelName.toString(),
+                            publishedDate:
+                                snapshotData.publishedDate.toString(),
+                            resourceTitle: snapshotData.title.toString(),
+                            resourceURL: snapshotData.url.toString(),
+                            resourceDescription:
+                                snapshotData.description.toString(),
+                          ),
+                        ),
                         (route) => true,
                       );
                     },
                     imageUrl: snapshotData.thumbnail.toString(),
                     title: snapshotData.title.toString(),
                     description: snapshotData.description.toString(),
-                    shareLink: "No link",
-                    exploreLink: 'No Link',
+                    shareLink: snapshotData.url.toString(),
                   );
                 },
               );

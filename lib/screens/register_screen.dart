@@ -17,6 +17,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       ),
     );
 
-    // The registration form
     final Widget form = Container(
       margin: EdgeInsets.symmetric(horizontal: 20),
       child: Column(
@@ -67,97 +67,128 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       ),
     );
 
-    // The register button
     final Widget registerButton = Container(
       width: double.infinity,
-      margin: EdgeInsets.symmetric(horizontal: 20),
+      margin: EdgeInsets.symmetric(horizontal: 90),
       child: ElevatedButton(
-        onPressed: () async {
-          final email = emailController.text;
-          final password = passwordController.text;
-          final confirmPassword = confirmPasswordController.text;
-          if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Please fill in all the fields.'),
-              ),
-            );
-            return;
-          }
-
-          if (password != confirmPassword) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Passwords do not match.'),
-              ),
-            );
-            return;
-          } else {
-            try {
-              if (authState.value != null && authState.value!.email == email) {
-                return showAlert(
-                    context, 'User already exists with Different Credential');
-              }
-              await ref.read(authRepositoryProvider).signUp(
-                    email,
-                    password,
-                    ref,
-                  );
-
-              // ignore: use_build_context_synchronously
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const DashboardScreen()),
-                (route) => false,
-              );
-            } catch (e) {
-              rethrow;
-            }
-          }
-        },
-        child: const Text(
-          'Register',
-          style: TextStyle(fontSize: 18),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.deepPurple,
+          padding: EdgeInsets.symmetric(vertical: 10),
         ),
+        onPressed: isLoading
+            ? null
+            : () async {
+                final email = emailController.text;
+                final password = passwordController.text;
+                final confirmPassword = confirmPasswordController.text;
+                if (email.isEmpty ||
+                    password.isEmpty ||
+                    confirmPassword.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Please fill in all the fields.'),
+                    ),
+                  );
+                  return;
+                }
+
+                if (password != confirmPassword) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Passwords do not match.'),
+                    ),
+                  );
+                  return;
+                } else {
+                  setState(() {
+                    isLoading = true;
+                  });
+
+                  try {
+                    if (authState.value != null &&
+                        authState.value!.email == email) {
+                      return showAlert(context,
+                          'User already exists with Different Credential');
+                    }
+                    await ref.read(authRepositoryProvider).signUp(
+                          email,
+                          password,
+                          ref,
+                        );
+
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const DashboardScreen()),
+                      (route) => false,
+                    );
+                  } catch (e) {
+                    rethrow;
+                  } finally {
+                    setState(() {
+                      isLoading = false;
+                    });
+                  }
+                }
+              },
+        child: isLoading
+            ? SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                ),
+              )
+            : const Text(
+                'Register',
+                style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
       ),
     );
 
-    // The registration screen
     return Scaffold(
       appBar: AppBar(
         title: const Text('Register'),
+        backgroundColor: Color.fromARGB(255, 183, 154, 233),
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(height: 40),
-                logo,
-                const SizedBox(height: 20),
-                form,
-                const SizedBox(height: 20),
-                registerButton,
-                const SizedBox(height: 40),
-                TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: Colors.white,
-                  ),
-                  child: const Text('Already have an account? Login'),
-                  onPressed: () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
-                      (route) => false,
-                    );
-                  },
+      body: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: constraints.maxHeight,
+              ),
+              child: IntrinsicHeight(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 40),
+                    logo,
+                    const SizedBox(height: 20),
+                    form,
+                    const SizedBox(height: 20),
+                    registerButton,
+                    const SizedBox(height: 40),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.white,
+                      ),
+                      child: const Text('Already have an account? Login'),
+                      onPressed: () {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen()),
+                          (route) => false,
+                        );
+                      },
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

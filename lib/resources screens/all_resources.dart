@@ -4,6 +4,7 @@ import 'package:devpedia/others/resource_info.dart';
 import 'package:devpedia/utils/resource_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 class AllResources extends ConsumerStatefulWidget {
   const AllResources({super.key});
@@ -14,6 +15,8 @@ class AllResources extends ConsumerStatefulWidget {
 
 class _AllResourcesState extends ConsumerState<AllResources> {
   late final Stream<List<ResourceModal>> resources;
+  late List<ResourceModal> fetchedResources;
+
   @override
   void initState() {
     super.initState();
@@ -26,15 +29,25 @@ class _AllResourcesState extends ConsumerState<AllResources> {
     });
   }
 
+  Future<void> shuffleResources() async {
+    setState(() {
+      fetchedResources.shuffle(Random());
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: refreshVideos,
+      onRefresh: () async {
+        await refreshVideos();
+        await shuffleResources();
+      },
       child: StreamBuilder<List<ResourceModal>>(
         stream: resources,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            final fetchedResources = snapshot.data!.toList();
+            fetchedResources = snapshot.data!.toList();
+            fetchedResources.shuffle(Random());
 
             if (fetchedResources.isNotEmpty) {
               return ListView.builder(
@@ -62,8 +75,7 @@ class _AllResourcesState extends ConsumerState<AllResources> {
                     imageUrl: snapshotData.thumbnail.toString(),
                     title: snapshotData.title.toString(),
                     description: snapshotData.description.toString(),
-                    shareLink: "No link",
-                    exploreLink: 'No Link',
+                    shareLink: snapshotData.url.toString(),
                   );
                 },
               );
