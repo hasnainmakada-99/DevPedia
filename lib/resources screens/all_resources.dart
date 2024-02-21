@@ -47,6 +47,9 @@ class _AllResourcesState extends ConsumerState<AllResources> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => ResourceInfo(
+                            channelName: snapshotData.channelName.toString(),
+                            publishedDate:
+                                snapshotData.publishedDate.toString(),
                             resourceTitle: snapshotData.title.toString(),
                             resourceURL: snapshotData.url.toString(),
                             resourceDescription:

@@ -8,11 +8,15 @@ class ResourceInfo extends ConsumerStatefulWidget {
   final String resourceTitle;
   final String resourceURL;
   final String resourceDescription;
+  final String channelName;
+  final String publishedDate;
   const ResourceInfo({
     Key? key,
     required this.resourceURL,
     required this.resourceDescription,
     required this.resourceTitle,
+    required this.channelName,
+    required this.publishedDate,
   }) : super(key: key);
 
   @override
@@ -69,12 +73,14 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo> {
                   children: [
                     player,
                     // Add video description here
-                    Text(
-                      widget.resourceDescription,
-                      style: GoogleFonts.lato(
-                        textStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
+                    Expanded(
+                      child: Text(
+                        widget.resourceDescription,
+                        style: GoogleFonts.lato(
+                          textStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                          ),
                         ),
                       ),
                     ),
@@ -83,12 +89,12 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo> {
                       height: 10,
                     ),
 
-                    Text("Channel Name: FreecodeCamp"),
+                    Text('${widget.channelName}'),
                     SizedBox(
                       height: 10,
                     ),
 
-                    Text("Published Date: 12-20-3022"),
+                    Text('${widget.publishedDate}'),
                     SizedBox(
                       height: 10,
                     ),

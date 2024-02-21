@@ -51,6 +51,10 @@ class _awsresourcesState extends State<awsresources> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => ResourceInfo(
+                                  channelName:
+                                      snapshotData.channelName.toString(),
+                                  publishedDate:
+                                      snapshotData.publishedDate.toString(),
                                   resourceTitle: snapshotData.title.toString(),
                                   resourceURL: snapshotData.url.toString(),
                                   resourceDescription:
