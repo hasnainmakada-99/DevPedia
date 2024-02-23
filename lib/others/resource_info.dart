@@ -1,6 +1,7 @@
-import 'package:devpedia/utils/ratings.dart';
+import 'package:devpedia/others/feedback_screen.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,6 +12,7 @@ class ResourceInfo extends ConsumerStatefulWidget {
   final String resourceDescription;
   final String channelName;
   final String publishedDate;
+  final String resourceRelatedTo;
   const ResourceInfo({
     Key? key,
     required this.resourceURL,
@@ -18,6 +20,7 @@ class ResourceInfo extends ConsumerStatefulWidget {
     required this.resourceTitle,
     required this.channelName,
     required this.publishedDate,
+    required this.resourceRelatedTo,
   }) : super(key: key);
 
   @override
@@ -90,56 +93,35 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo> {
                       height: 10,
                     ),
 
-                    Text('${widget.channelName}'),
-                    SizedBox(
+                    Text(widget.channelName),
+                    const SizedBox(
                       height: 10,
                     ),
 
-                    Text('${widget.publishedDate}'),
-                    SizedBox(
+                    Text(widget.publishedDate),
+                    const SizedBox(
                       height: 10,
                     ),
-                    Text("Please rate the resource"),
-                    // RatingBar.builder(
-                    //   initialRating: 0,
-                    //   minRating: 1,
-                    //   direction: Axis.horizontal,
-                    //   allowHalfRating: true,
-                    //   itemCount: 5,
-                    //   itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                    //   itemBuilder: (context, _) => Icon(
-                    //     Icons.star,
-                    //     color: Colors.amber,
-                    //   ),
-                    //   onRatingUpdate: (rating) {
-                    //     setState(() {
-                    //       ratingText = rating.toString();
-                    //     });
-                    //   },
-                    // ),
 
-                    RatingBar.builder(
-                      initialRating: 0,
-                      minRating: 1,
-                      direction: Axis.horizontal,
-                      allowHalfRating: true,
-                      itemCount: 5,
-                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                      itemBuilder: (context, _) => Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                      ),
-                      onRatingUpdate: (rating) {
-                        print(rating);
-                        // Here you can call the function to store the rating in Firebase
-                        storeRating(rating);
+                    const SizedBox(
+                      height: 10,
+                    ),
+
+                    // Add 1 button over here which will redirect to the feedback screen.
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FeedbackScreen(
+                              resourceRelatedTo: widget.resourceRelatedTo,
+                            ),
+                          ),
+                          (route) => true,
+                        );
                       },
+                      child: const Text('Give Feedback on this Resource'),
                     ),
-
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text('data: $ratingText')
                   ],
                 );
               },

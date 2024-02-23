@@ -51,6 +51,7 @@ class _JenkinsResourcesState extends ConsumerState<JenkinsResources> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => ResourceInfo(
+                            resourceRelatedTo: snapshotData.tool.toString(),
                             channelName: snapshotData.channelName.toString(),
                             publishedDate:
                                 snapshotData.publishedDate.toString(),

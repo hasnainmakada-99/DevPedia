@@ -52,6 +52,7 @@ class _awsresourcesState extends ConsumerState<awsresources> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => ResourceInfo(
+                            resourceRelatedTo: snapshotData.tool.toString(),
                             channelName: snapshotData.channelName.toString(),
                             publishedDate:
                                 snapshotData.publishedDate.toString(),
