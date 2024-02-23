@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -14,26 +13,27 @@ class CloudRepository {
           .collection('userFeedback')
           .where('userEmail', isEqualTo: userEmail)
           .where('ResourceTool', isEqualTo: ResourceTool)
-          .get();
+          .get(); // check if user has already given feedback for the resource
 
       if (querySnapshot.docs.isNotEmpty) {
-        final docId = querySnapshot.docs.first.id;
+        final docId = querySnapshot
+            .docs.first.id; // get the document ID of the user feedback
         await _firestore.collection('userFeedback').doc(docId).update({
+          // updates the existing feedback
           'ratings': ratings,
           'feedbackDescription': feedbackDescription,
         });
-        print('Feedback updated successfully');
+        // print('Feedback updated successfully');
       } else {
         await _firestore.collection('userFeedback').add({
+          // if the user does not exists, then it adds the feedback as a new input to the collection of userFeedbacks
           'userEmail': userEmail,
           'ratings': ratings,
           'feedbackDescription': feedbackDescription,
           'ResourceTool': ResourceTool,
         });
-        print('Feedback added successfully');
       }
     } catch (e) {
-      print(e.toString());
       rethrow;
     }
   }

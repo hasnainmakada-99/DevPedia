@@ -15,7 +15,8 @@ final authStateChangesProvider = StreamProvider<User?>((ref) {
 class AuthRepository {
   final _auth = FirebaseAuth.instance;
 
-  Stream<User?> get authStateChanges => _auth.authStateChanges();
+  Stream<User?> get authStateChanges => _auth
+      .authStateChanges(); // gets the stream of user authentication state changes from firebase auth
 
   Future<void> signUp(String email, String password, WidgetRef ref) async {
     try {
