@@ -1,4 +1,5 @@
 import 'package:devpedia/others/feedback_screen.dart';
+import 'package:devpedia/others/chat_screen.dart'; // Import the chat_screen.dart
 
 import 'package:flutter/material.dart';
 
@@ -27,9 +28,12 @@ class ResourceInfo extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _ResourceInfoState();
 }
 
-class _ResourceInfoState extends ConsumerState<ResourceInfo> {
+class _ResourceInfoState extends ConsumerState<ResourceInfo>
+    with SingleTickerProviderStateMixin {
   late YoutubePlayerController _controller;
   var ratingText = '';
+  late TabController _tabController; // Declare the TabController
+
   @override
   void initState() {
     super.initState();
@@ -41,11 +45,14 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo> {
         showLiveFullscreenButton: true,
       ),
     );
+    _tabController =
+        TabController(length: 2, vsync: this); // Initialize the TabController
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _tabController.dispose(); // Dispose the TabController
     super.dispose();
   }
 
@@ -58,73 +65,84 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo> {
       ),
       body: Column(
         children: [
+          TabBar(
+            // Add the TabBar widget
+            controller: _tabController, // Assign the TabController
+            tabs: [
+              Tab(text: 'Video'), // Add a tab for the video
+              Tab(text: 'Chat'), // Add a tab for the chat
+            ],
+          ),
           Expanded(
-            child: YoutubePlayerBuilder(
-              player: YoutubePlayer(
-                controller: _controller,
-                showVideoProgressIndicator: true,
-                progressIndicatorColor: Colors.blueAccent,
-                progressColors: const ProgressBarColors(
-                  playedColor: Colors.blue,
-                  handleColor: Colors.blueAccent,
-                ),
-                onReady: () {
-                  // Perform any additional setup after player is ready
-                },
-              ),
-              builder: (context, player) {
-                return Column(
-                  children: [
-                    player,
-                    // Add video description here
-                    Expanded(
-                      child: Text(
-                        widget.resourceDescription,
-                        style: GoogleFonts.lato(
-                          textStyle: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
+            child: TabBarView(
+              // Add the TabBarView widget
+              controller: _tabController, // Assign the TabController
+              children: [
+                YoutubePlayerBuilder(
+                  player: YoutubePlayer(
+                    controller: _controller,
+                    showVideoProgressIndicator: true,
+                    progressIndicatorColor: Colors.blueAccent,
+                    progressColors: const ProgressBarColors(
+                      playedColor: Colors.blue,
+                      handleColor: Colors.blueAccent,
                     ),
-
-                    SizedBox(
-                      height: 10,
-                    ),
-
-                    Text(widget.channelName),
-                    const SizedBox(
-                      height: 10,
-                    ),
-
-                    Text(widget.publishedDate),
-                    const SizedBox(
-                      height: 10,
-                    ),
-
-                    const SizedBox(
-                      height: 10,
-                    ),
-
-                    // Add 1 button over here which will redirect to the feedback screen.
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => FeedbackScreen(
-                              resourceRelatedTo: widget.resourceRelatedTo,
+                  ),
+                  builder: (context, player) {
+                    return Column(
+                      children: [
+                        player,
+                        // Add video description here
+                        Expanded(
+                          child: Text(
+                            widget.resourceDescription,
+                            style: GoogleFonts.lato(
+                              textStyle: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                              ),
                             ),
                           ),
-                          (route) => true,
-                        );
-                      },
-                      child: const Text('Give Feedback on this Resource'),
-                    ),
-                  ],
-                );
-              },
+                        ),
+
+                        SizedBox(
+                          height: 10,
+                        ),
+
+                        Text(widget.channelName),
+                        const SizedBox(
+                          height: 10,
+                        ),
+
+                        Text("Published Date: " + widget.publishedDate),
+                        const SizedBox(
+                          height: 10,
+                        ),
+
+                        const SizedBox(
+                          height: 10,
+                        ),
+
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => FeedbackScreen(
+                                  resourceRelatedTo: widget.resourceRelatedTo,
+                                ),
+                              ),
+                              (route) => true,
+                            );
+                          },
+                          child: const Text('Give Feedback on this Resource'),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                ChatScreen(),
+              ],
             ),
           ),
         ],

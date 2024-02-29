@@ -8,11 +8,13 @@ import 'package:devpedia/utils/alertDialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  Gemini.init(apiKey: "AIzaSyBPnIGkp6HzHm0S6eHGxHvPnNnojM6nSj0");
   runApp(
     const ProviderScope(
       child: MyApp(),
