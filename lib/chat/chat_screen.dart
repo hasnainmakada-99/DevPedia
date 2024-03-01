@@ -1,64 +1,115 @@
-import 'package:devpedia/chat/chat_input_box.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:devpedia/gemini/chatController.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gemini/flutter_gemini.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SectionTextInput extends StatefulWidget {
-  const SectionTextInput({super.key});
+class ChatScreen extends ConsumerStatefulWidget {
+  const ChatScreen({Key? key}) : super(key: key);
 
   @override
-  State<SectionTextInput> createState() => _SectionTextInputState();
+  _TextOnlyState createState() => _TextOnlyState();
 }
 
-class _SectionTextInputState extends State<SectionTextInput> {
-  final controller = TextEditingController();
-  final gemini = Gemini.instance;
-  String? searchedText, result;
-  bool _loading = false;
+class _TextOnlyState extends ConsumerState<ChatScreen> {
+  final TextEditingController _textController = TextEditingController();
+  final ScrollController _controller = ScrollController();
 
-  bool get loading => _loading;
-
-  set loading(bool set) => setState(() => _loading = set);
+  @override
+  void dispose() {
+    _textController.dispose();
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        if (searchedText != null)
-          MaterialButton(
-              color: Colors.blue.shade700,
-              onPressed: () {
-                setState(() {
-                  searchedText = null;
-                  result = null;
-                });
-              },
-              child: Text('search: $searchedText')),
-        Expanded(
-            child: loading
-                ? const Center(child: CircularProgressIndicator())
-                : result != null
-                    ? Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Markdown(data: result!),
-                      )
-                    : const Center(child: Text('Search something!'))),
-        ChatInputBox(
-          controller: controller,
-          onSend: () {
-            if (controller.text.isNotEmpty) {
-              searchedText = controller.text;
-              controller.clear();
-              loading = true;
+    final chatController = ref.watch(chatControllerProvider);
 
-              gemini.text(searchedText!).then((value) {
-                result = value?.content?.parts?.last.text;
-                loading = false;
-              });
-            }
-          },
-        ),
-      ],
+    return Scaffold(
+      body: Column(
+        children: [
+          Expanded(
+            child: StreamBuilder<List<Map<String, String>>>(
+              stream: chatController.firestore
+                  .collection('chats')
+                  .orderBy('timestamp', descending: true)
+                  .snapshots()
+                  .map((event) => event.docs
+                      .map((e) => e.data() as Map<String, String>)
+                      .toList()),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final chatList = snapshot.data!;
+                  return ListView.builder(
+                    controller: _controller,
+                    itemCount: chatList.length,
+                    padding: const EdgeInsets.only(bottom: 20),
+                    itemBuilder: (context, index) {
+                      final chat = chatList[index];
+                      return ListTile(
+                        isThreeLine: true,
+                        leading: CircleAvatar(
+                          child: Text(chat["role"]!.substring(0, 1)),
+                        ),
+                        title: Text(chat["role"]!),
+                        subtitle: Text(chat["text"]!),
+                      );
+                    },
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  return const CircularProgressIndicator();
+                }
+              },
+            ),
+          ),
+          Container(
+            alignment: Alignment.bottomRight,
+            margin: const EdgeInsets.all(20),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              border: Border.all(color: Colors.grey),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _textController,
+                    decoration: InputDecoration(
+                      hintText: "Type a message",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide.none,
+                      ),
+                      fillColor: Colors.transparent,
+                    ),
+                    maxLines: null,
+                    keyboardType: TextInputType.multiline,
+                  ),
+                ),
+                Consumer(
+                  builder: (context, watch, child) {
+                    final loading = chatController.loading;
+                    return IconButton(
+                      icon: loading
+                          ? CircularProgressIndicator()
+                          : Icon(Icons.send),
+                      onPressed: () {
+                        ref
+                            .watch(chatControllerProvider.notifier)
+                            .fromText(_textController.text);
+                        _textController.clear();
+                      },
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

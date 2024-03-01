@@ -1,5 +1,6 @@
+import 'package:devpedia/chat/chat_screen.dart';
 import 'package:devpedia/others/feedback_screen.dart';
-import 'package:devpedia/others/chat_screen.dart'; // Import the chat_screen.dart
+// Import the chat_screen.dart
 
 import 'package:flutter/material.dart';
 
@@ -141,7 +142,7 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo>
                     );
                   },
                 ),
-                ChatScreen(),
+                const ChatScreen(),
               ],
             ),
           ),
