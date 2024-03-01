@@ -1,3 +1,4 @@
+import 'package:devpedia/auth/auth_provider.dart';
 import 'package:devpedia/chat/chat_screen.dart';
 import 'package:devpedia/others/feedback_screen.dart';
 // Import the chat_screen.dart
@@ -33,7 +34,7 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo>
     with SingleTickerProviderStateMixin {
   late YoutubePlayerController _controller;
   var ratingText = '';
-  late TabController _tabController; // Declare the TabController
+  late TabController _tabController; // Delare the TabController
 
   @override
   void initState() {
@@ -59,6 +60,7 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo>
 
   @override
   Widget build(BuildContext context) {
+    final authRepositoryController = ref.watch(authRepositoryProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.resourceTitle),
@@ -142,7 +144,7 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo>
                     );
                   },
                 ),
-                const ChatScreen(),
+                ChatScreen(userEmail: authRepositoryController.userEmail),
               ],
             ),
           ),

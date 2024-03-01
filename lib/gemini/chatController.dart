@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 // Assuming existence
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_gemini/google_gemini.dart';
@@ -10,6 +11,8 @@ final chatControllerProvider =
 
 class ChatController extends StateNotifier<ChatState> {
   ChatController(this.ref) : super(ChatState());
+
+  FirebaseAuth get auth => FirebaseAuth.instance;
 
   final Ref ref;
   final geminiService =
@@ -23,12 +26,14 @@ class ChatController extends StateNotifier<ChatState> {
       final timestamp = DateTime.now();
 
       await FirebaseFirestore.instance.collection('chats').add({
+        'user': auth.currentUser!.email,
         'role': 'You',
         'text': query,
         'timestamp': timestamp,
       });
 
       await FirebaseFirestore.instance.collection('chats').add({
+        'user': auth.currentUser!.email,
         'role': 'DevAi',
         'text': response.text,
         'timestamp': timestamp,

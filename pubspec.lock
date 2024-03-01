@@ -296,6 +296,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.0"
+  google_gemini:
+    dependency: "direct main"
+    description:
+      name: google_gemini
+      sha256: a99e14ba2d497ec8e2b4c83e483204709a4ce3ec6c0a6021b3c4a9b2cd671150
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.2"
   http:
     dependency: transitive
     description:

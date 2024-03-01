@@ -18,6 +18,11 @@ class AuthRepository {
   Stream<User?> get authStateChanges => _auth
       .authStateChanges(); // gets the stream of user authentication state changes from firebase auth
 
+  String? get userEmail {
+    final user = _auth.currentUser;
+    return user?.email;
+  }
+
   Future<void> signUp(String email, String password, WidgetRef ref) async {
     try {
       await _auth.createUserWithEmailAndPassword(

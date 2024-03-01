@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:devpedia/auth/auth_provider.dart';
 import 'package:devpedia/gemini/chatController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+  final String? userEmail; // Add a userEmail parameter to the constructor
+
+  const ChatScreen({Key? key, required this.userEmail}) : super(key: key);
 
   @override
   _TextOnlyState createState() => _TextOnlyState();
@@ -24,19 +27,18 @@ class _TextOnlyState extends ConsumerState<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     final chatController = ref.watch(chatControllerProvider);
-
+    final authRepoController = ref.watch(authRepositoryProvider);
     return Scaffold(
       body: Column(
         children: [
           Expanded(
-            child: StreamBuilder<List<Map<String, String>>>(
+            child: StreamBuilder<List<Map<String, dynamic>>>(
               stream: chatController.firestore
                   .collection('chats')
-                  .orderBy('timestamp', descending: true)
+                  .where('user', isEqualTo: authRepoController.userEmail)
+                  .orderBy('timestamp', descending: false)
                   .snapshots()
-                  .map((event) => event.docs
-                      .map((e) => e.data() as Map<String, String>)
-                      .toList()),
+                  .map((event) => event.docs.map((e) => e.data()).toList()),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final chatList = snapshot.data!;
@@ -59,7 +61,7 @@ class _TextOnlyState extends ConsumerState<ChatScreen> {
                 } else if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
                 } else {
-                  return const CircularProgressIndicator();
+                  return const Center(child: Text('No Chats Found'));
                 }
               },
             ),
