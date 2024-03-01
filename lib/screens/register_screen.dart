@@ -1,7 +1,8 @@
 import 'package:devpedia/auth/auth_provider.dart';
+import 'package:devpedia/others/password_field.dart';
 import 'package:devpedia/screens/dashboard_screen.dart';
 import 'package:devpedia/screens/login_screen.dart';
-import 'package:devpedia/utils/alertDialog.dart';
+import 'package:devpedia/utils/showAlert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -44,25 +45,27 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             style: TextStyle(fontSize: 16),
           ),
           SizedBox(height: 10),
-          TextFormField(
-            controller: passwordController,
-            obscureText: true,
-            decoration: InputDecoration(
-              labelText: 'Enter your Password',
-              border: OutlineInputBorder(),
-            ),
-            style: TextStyle(fontSize: 16),
-          ),
+          FancyPasswordField1(),
+          // TextFormField(
+          //   controller: passwordController,
+          //   obscureText: true,
+          //   decoration: InputDecoration(
+          //     labelText: 'Enter your Password',
+          //     border: OutlineInputBorder(),
+          //   ),
+          //   style: TextStyle(fontSize: 16),
+          // ),
           SizedBox(height: 10),
-          TextFormField(
-            controller: confirmPasswordController,
-            obscureText: true,
-            decoration: InputDecoration(
-              labelText: 'Confirm your Password',
-              border: OutlineInputBorder(),
-            ),
-            style: TextStyle(fontSize: 16),
-          ),
+          FancyPasswordField1(),
+          // TextFormField(
+          //   controller: confirmPasswordController,
+          //   obscureText: true,
+          //   decoration: InputDecoration(
+          //     labelText: 'Confirm your Password',
+          //     border: OutlineInputBorder(),
+          //   ),
+          //   style: TextStyle(fontSize: 16),
+          // ),
         ],
       ),
     );
@@ -72,7 +75,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       margin: EdgeInsets.symmetric(horizontal: 90),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.deepPurple,
+          backgroundColor: const Color.fromARGB(255, 53, 51, 56),
           padding: EdgeInsets.symmetric(vertical: 10),
         ),
         onPressed: isLoading
@@ -107,8 +110,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   try {
                     if (authState.value != null &&
                         authState.value!.email == email) {
-                      return showAlert(context,
-                          'User already exists with Different Credential');
+                      return showAlert(
+                        context,
+                        'User already exists with Different Credential',
+                      );
                     }
                     await ref.read(authRepositoryProvider).signUp(
                           email,
@@ -148,8 +153,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Register'),
-        backgroundColor: Color.fromARGB(255, 183, 154, 233),
+        title: const Text(
+          'Register',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Color.fromARGB(255, 0, 0, 0),
       ),
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
@@ -173,12 +181,17 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       style: TextButton.styleFrom(
                         backgroundColor: Colors.white,
                       ),
-                      child: const Text('Already have an account? Login'),
+                      child: const Text(
+                        'Already have an account? Login',
+                        style:
+                            TextStyle(color: Color.fromARGB(255, 53, 51, 56)),
+                      ),
                       onPressed: () {
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => LoginScreen()),
+                            builder: (context) => LoginScreen(),
+                          ),
                           (route) => false,
                         );
                       },

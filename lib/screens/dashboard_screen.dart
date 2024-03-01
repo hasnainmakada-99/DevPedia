@@ -4,6 +4,8 @@ import 'package:devpedia/resources%20screens/all_resources.dart';
 import 'package:devpedia/resources%20screens/aws.dart';
 import 'package:devpedia/resources%20screens/jenkins.dart';
 import 'package:devpedia/screens/login_screen.dart';
+import 'package:devpedia/utils/alert_dialog.dart';
+import 'package:devpedia/utils/showAlert.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,13 +45,35 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             icon: const Icon(Icons.logout),
             onPressed: authStateChangesNotifier.value != null
                 ? () {
-                    ref.watch(authRepositoryProvider).signOut();
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LoginScreen(),
-                      ),
-                      (route) => false,
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Logout'),
+                          content:
+                              const Text('Are you sure you want to logout?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                ref.watch(authRepositoryProvider).signOut();
+                                Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                    builder: (context) => LoginScreen(),
+                                  ),
+                                  (route) => false,
+                                );
+                              },
+                              child: const Text('Logout'),
+                            ),
+                          ],
+                        );
+                      },
                     );
                   }
                 : null,
@@ -65,7 +89,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
-              decoration: const BoxDecoration(color: Colors.black87),
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 0, 0, 0),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

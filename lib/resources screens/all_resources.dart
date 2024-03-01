@@ -21,6 +21,11 @@ class _AllResourcesState extends ConsumerState<AllResources> {
   void initState() {
     super.initState();
     resources = fetchVideos();
+    preloadData();
+  }
+
+  Future<void> preloadData() async {
+    fetchedResources = await fetchVideos().first;
   }
 
   Future<void> refreshVideos() async {

@@ -1,15 +1,9 @@
 import 'package:devpedia/auth/auth_provider.dart';
-import 'package:devpedia/chat/chat_screen.dart';
 import 'package:devpedia/firebase_options.dart';
 import 'package:devpedia/screens/dashboard_screen.dart';
-
 import 'package:devpedia/screens/login_screen.dart';
-import 'package:devpedia/screens/register_screen.dart';
-import 'package:devpedia/utils/alertDialog.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {

@@ -1,13 +1,13 @@
 import 'package:devpedia/auth/auth_provider.dart';
 import 'package:devpedia/chat/chat_screen.dart';
 import 'package:devpedia/others/feedback_screen.dart';
-// Import the chat_screen.dart
 
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+
 import 'package:google_fonts/google_fonts.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class ResourceInfo extends ConsumerStatefulWidget {
   final String resourceTitle;
@@ -40,7 +40,7 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo>
   void initState() {
     super.initState();
     _controller = YoutubePlayerController(
-      initialVideoId: YoutubePlayer.convertUrlToId(widget.resourceURL)!,
+      initialVideoId: YoutubePlayer.convertUrlToId(widget.resourceURL) ?? '',
       flags: const YoutubePlayerFlags(
         autoPlay: false,
         mute: false,
@@ -52,15 +52,9 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo>
   }
 
   @override
-  void dispose() {
-    _controller.dispose();
-    _tabController.dispose(); // Dispose the TabController
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final authRepositoryController = ref.watch(authRepositoryProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.resourceTitle),
@@ -71,9 +65,9 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo>
           TabBar(
             // Add the TabBar widget
             controller: _tabController, // Assign the TabController
-            tabs: [
+            tabs: const [
               Tab(text: 'Video'), // Add a tab for the video
-              Tab(text: 'Chat'), // Add a tab for the chat
+              Tab(text: 'DevAi'), // Add a tab for the chat
             ],
           ),
           Expanded(
@@ -97,33 +91,42 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo>
                         player,
                         // Add video description here
                         Expanded(
-                          child: Text(
-                            widget.resourceDescription,
-                            style: GoogleFonts.lato(
-                              textStyle: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
+                          child: SingleChildScrollView(
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                widget.resourceDescription,
+                                style: GoogleFonts.lato(
+                                  textStyle: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 20,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
                         ),
 
-                        SizedBox(
-                          height: 10,
+                        const SizedBox(
+                          height: 2,
                         ),
 
-                        Text(widget.channelName),
+                        Text('Channel: ${widget.channelName}'),
                         const SizedBox(
-                          height: 10,
+                          height: 2,
                         ),
 
-                        Text("Published Date: " + widget.publishedDate),
+                        Text("Published Date: ${widget.publishedDate}"),
                         const SizedBox(
-                          height: 10,
+                          height: 2,
                         ),
 
                         const SizedBox(
-                          height: 10,
+                          height: 2,
                         ),
 
                         ElevatedButton(
@@ -151,5 +154,12 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo>
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _tabController.dispose(); // Dispose the TabController
+    super.dispose();
   }
 }

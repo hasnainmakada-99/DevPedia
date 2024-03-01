@@ -1,4 +1,7 @@
+import 'dart:ffi';
+
 import 'package:devpedia/auth/auth_provider.dart';
+import 'package:devpedia/others/password_field.dart';
 import 'package:devpedia/screens/dashboard_screen.dart';
 import 'package:devpedia/screens/register_screen.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +21,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
-        backgroundColor: Color.fromARGB(255, 183, 154, 233),
+        title: Text(
+          'Login',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Color.fromARGB(255, 0, 0, 0),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -28,6 +34,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              SizedBox(height: 50),
               Container(
                 margin: EdgeInsets.only(bottom: 20),
                 child: CircleAvatar(
@@ -44,12 +51,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   fillColor: Colors.deepPurple[50],
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextField(
                 controller: passwordController,
                 decoration: InputDecoration(
                   labelText: 'Enter your Password',
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                   filled: true,
                   fillColor: Colors.deepPurple[50],
                 ),
@@ -61,7 +68,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 margin: EdgeInsets.symmetric(horizontal: 90),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.deepPurple,
+                    backgroundColor: Color.fromARGB(255, 53, 51, 56),
                     padding: EdgeInsets.symmetric(vertical: 10),
                   ),
                   child: isLoading
@@ -84,7 +91,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 child: Text(
                   'Not registered yet? Register now.',
-                  style: TextStyle(color: Colors.deepPurple),
+                  style: TextStyle(color: Color.fromARGB(255, 53, 51, 56)),
                 ),
                 onPressed: _navigateToRegisterScreen,
               ),
