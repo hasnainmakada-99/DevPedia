@@ -110,19 +110,43 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
 
-    await ref.read(authRepositoryProvider).signIn(email, password);
+    try {
+      await ref.read(authRepositoryProvider).signIn(email, password);
 
-    setState(() {
-      isLoading = false;
-    });
+      setState(() {
+        isLoading = false;
+      });
 
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(
-        builder: (context) => DashboardScreen(),
-      ),
-      (route) => false,
-    );
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DashboardScreen(),
+        ),
+        (route) => false,
+      );
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text(e.toString()),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   void _navigateToRegisterScreen() {

@@ -35,11 +35,10 @@ class AuthRepository {
     }
   }
 
-  Future<void> signIn(String email, String password) async {
+  Future<dynamic> signIn(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
-      log(e.toString());
       rethrow;
     } catch (e) {
       log(e.toString());

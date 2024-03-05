@@ -1,5 +1,4 @@
 import 'package:devpedia/auth/auth_provider.dart';
-
 import 'package:devpedia/screens/dashboard_screen.dart';
 import 'package:devpedia/screens/login_screen.dart';
 import 'package:devpedia/utils/showAlert.dart';

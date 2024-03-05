@@ -38,9 +38,9 @@ dependencies:
     sdk: flutter
   flutter_rating_bar: ^4.0.1
   flutter_riverpod: ^2.4.9
-  google_fonts: ^6.1.0
+  google_fonts: 6.1.0
   google_gemini: ^0.1.2
-  share_plus: ^7.2.2
+  share_plus: any
   step_progress_indicator: ^1.0.2
   youtube_player_flutter: ^9.0.0
 
