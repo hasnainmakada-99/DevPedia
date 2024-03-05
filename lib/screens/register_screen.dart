@@ -1,5 +1,5 @@
 import 'package:devpedia/auth/auth_provider.dart';
-import 'package:devpedia/others/password_field.dart';
+
 import 'package:devpedia/screens/dashboard_screen.dart';
 import 'package:devpedia/screens/login_screen.dart';
 import 'package:devpedia/utils/showAlert.dart';
@@ -45,27 +45,25 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             style: TextStyle(fontSize: 16),
           ),
           SizedBox(height: 10),
-          FancyPasswordField1(),
-          // TextFormField(
-          //   controller: passwordController,
-          //   obscureText: true,
-          //   decoration: InputDecoration(
-          //     labelText: 'Enter your Password',
-          //     border: OutlineInputBorder(),
-          //   ),
-          //   style: TextStyle(fontSize: 16),
-          // ),
+          TextFormField(
+            controller: passwordController,
+            obscureText: true,
+            decoration: InputDecoration(
+              labelText: 'Enter your Password',
+              border: OutlineInputBorder(),
+            ),
+            style: TextStyle(fontSize: 16),
+          ),
           SizedBox(height: 10),
-          FancyPasswordField1(),
-          // TextFormField(
-          //   controller: confirmPasswordController,
-          //   obscureText: true,
-          //   decoration: InputDecoration(
-          //     labelText: 'Confirm your Password',
-          //     border: OutlineInputBorder(),
-          //   ),
-          //   style: TextStyle(fontSize: 16),
-          // ),
+          TextFormField(
+            controller: confirmPasswordController,
+            obscureText: true,
+            decoration: InputDecoration(
+              labelText: 'Confirm your Password',
+              border: OutlineInputBorder(),
+            ),
+            style: TextStyle(fontSize: 16),
+          ),
         ],
       ),
     );
