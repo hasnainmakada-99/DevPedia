@@ -5,6 +5,7 @@ import 'package:devpedia/screens/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +30,19 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(),
+      home: FlutterSplashScreen.gif(
+        gifPath: 'assets/devpedia_logo.png',
+        gifWidth: 269,
+        gifHeight: 474,
+        nextScreen: const MyHomePage(),
+        duration: const Duration(milliseconds: 1000),
+        onInit: () async {
+          debugPrint("onInit");
+        },
+        onEnd: () async {
+          debugPrint("onEnd 1");
+        },
+      ),
     );
   }
 }
