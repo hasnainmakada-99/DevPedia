@@ -71,6 +71,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     backgroundColor: Color.fromARGB(255, 53, 51, 56),
                     padding: EdgeInsets.symmetric(vertical: 10),
                   ),
+                  onPressed: isLoading ? null : _handleLogin,
                   child: isLoading
                       ? SizedBox(
                           width: 20,
@@ -81,19 +82,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           'Login',
                           style: TextStyle(fontSize: 18, color: Colors.white),
                         ),
-                  onPressed: isLoading ? null : _handleLogin,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextButton(
                 style: TextButton.styleFrom(
                   backgroundColor: Colors.transparent,
                 ),
+                onPressed: _navigateToRegisterScreen,
                 child: Text(
                   'Not registered yet? Register now.',
                   style: TextStyle(color: Color.fromARGB(255, 53, 51, 56)),
                 ),
-                onPressed: _navigateToRegisterScreen,
               ),
             ],
           ),

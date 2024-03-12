@@ -2,6 +2,7 @@ import 'package:devpedia/auth/auth_provider.dart';
 import 'package:devpedia/firebase_options.dart';
 import 'package:devpedia/screens/dashboard_screen.dart';
 import 'package:devpedia/screens/login_screen.dart';
+import 'package:devpedia/utils/alert_dialog.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -61,7 +62,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
 
     return authState.when(
       data: (data) {
-        if (data != null) {
+        if (data != null && data.emailVerified) {
           return const DashboardScreen();
         } else {
           return LoginScreen();

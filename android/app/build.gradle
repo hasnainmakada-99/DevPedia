@@ -21,8 +21,18 @@ def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
-
+ def keystoreProperties = new Properties()
+   def keystorePropertiesFile = rootProject.file('key.properties')
+   if (keystorePropertiesFile.exists()) {
+       keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+   }
 android {
+
+
+
+   
+
+
     namespace "com.example.devpedia"
     compileSdkVersion 34
     ndkVersion flutter.ndkVersion
@@ -51,7 +61,14 @@ android {
         versionName flutterVersionName
         multiDexEnabled true
     }
-
+signingConfigs {
+       release {
+           keyAlias keystoreProperties['keyAlias']
+           keyPassword keystoreProperties['keyPassword']
+           storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+           storePassword keystoreProperties['storePassword']
+       }
+   }
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.

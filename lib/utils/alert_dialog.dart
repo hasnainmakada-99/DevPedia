@@ -2,22 +2,25 @@ import 'package:flutter/material.dart';
 
 Future showAlertDialog({
   required BuildContext context,
-  required String text,
-  required Function onApprove,
+  required String titleText,
+  required String contentText,
+  required VoidCallback onApprove,
+  required VoidCallback onReject,
 }) async {
-  return showDialog<void>(
+  showDialog(
     context: context,
-    barrierDismissible: false, // user must tap button!
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text(text),
-        actions: <Widget>[
+        title: Text(titleText),
+        content: Text(contentText),
+        actions: [
           TextButton(
-            child: const Text('Yes Sure!'),
-            onPressed: () {
-              onApprove();
-              Navigator.of(context).pop();
-            },
+            onPressed: onReject,
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: onApprove,
+            child: const Text('OK'),
           ),
         ],
       );

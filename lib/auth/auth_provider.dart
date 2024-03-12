@@ -29,6 +29,10 @@ class AuthRepository {
         email: email,
         password: password,
       );
+      User? user = _auth.currentUser;
+      if (user != null && !user.emailVerified) {
+        await user.sendEmailVerification();
+      }
     } catch (e) {
       log(e.toString());
       rethrow;
@@ -38,6 +42,13 @@ class AuthRepository {
   Future<dynamic> signIn(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+      User? user = _auth.currentUser;
+      if (user != null && !user.emailVerified) {
+        throw FirebaseAuthException(
+          code: 'email-not-verified',
+          message: 'Please verify your email before signing in.',
+        );
+      }
     } on FirebaseAuthException catch (e) {
       rethrow;
     } catch (e) {

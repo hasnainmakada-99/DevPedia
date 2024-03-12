@@ -28,10 +28,11 @@ class _AllResourcesState extends ConsumerState<AllResources> {
   }
 
   Future<void> preloadData() async {
-    resources = (await fetchVideos().first) as Stream<List<ResourceModal>>;
+    final videos = await fetchVideos().first;
     // Save the fetched videos to the cache
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('cachedVideos', jsonEncode(resources));
+    prefs.setString('cachedVideos', jsonEncode(videos));
+    resources = Stream.value(videos);
   }
 
   Future<void> refreshVideos() async {
@@ -43,45 +44,50 @@ class _AllResourcesState extends ConsumerState<AllResources> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () async {
-        await refreshVideos();
-      },
+      onRefresh: () => refreshVideos(),
       child: StreamBuilder<List<ResourceModal>>(
         stream: resources,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                final snapshotData = snapshot.data![index];
-                return ResourceCard(
-                  navigateTo: () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ResourceInfo(
-                          resourceRelatedTo: snapshotData.tool.toString(),
-                          channelName: snapshotData.channelName.toString(),
-                          publishedDate: snapshotData.publishedDate.toString(),
-                          resourceTitle: snapshotData.title.toString(),
-                          resourceURL: snapshotData.url.toString(),
-                          resourceDescription:
-                              snapshotData.description.toString(),
+            if (snapshot.data!.isEmpty) {
+              return const Center(
+                child: Text("No resources available"),
+              );
+            } else {
+              return ListView.builder(
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) {
+                  final snapshotData = snapshot.data![index];
+                  return ResourceCard(
+                    navigateTo: () {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ResourceInfo(
+                            resourceRelatedTo: snapshotData.tool.toString(),
+                            channelName: snapshotData.channelName.toString(),
+                            publishedDate:
+                                snapshotData.publishedDate.toString(),
+                            resourceTitle: snapshotData.title.toString(),
+                            resourceURL: snapshotData.url.toString(),
+                            resourceDescription:
+                                snapshotData.description.toString(),
+                          ),
                         ),
-                      ),
-                      (route) => true,
-                    );
-                  },
-                  imageUrl: snapshotData.thumbnail.toString(),
-                  title: snapshotData.title.toString(),
-                  description: snapshotData.description.toString(),
-                  shareLink: snapshotData.url.toString(),
-                );
-              },
-            );
+                        (route) => true,
+                      );
+                    },
+                    imageUrl: snapshotData.thumbnail.toString(),
+                    title: snapshotData.title.toString(),
+                    description: snapshotData.description.toString(),
+                    shareLink: snapshotData.url.toString(),
+                  );
+                },
+              );
+            }
           } else if (snapshot.hasError) {
             return const Center(
-              child: Text("Some Error Occured"),
+              child: Text("Some Error Occurred"),
             );
           } else if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -89,7 +95,7 @@ class _AllResourcesState extends ConsumerState<AllResources> {
             );
           } else {
             return const Center(
-              child: Text("Some Error Occured"),
+              child: Text("Some Error Occurred"),
             );
           }
 

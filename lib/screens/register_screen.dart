@@ -1,6 +1,7 @@
 import 'package:devpedia/auth/auth_provider.dart';
 import 'package:devpedia/screens/dashboard_screen.dart';
 import 'package:devpedia/screens/login_screen.dart';
+import 'package:devpedia/utils/alert_dialog.dart';
 import 'package:devpedia/utils/showAlert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -118,11 +119,53 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           ref,
                         );
 
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const DashboardScreen()),
-                      (route) => false,
+                    // showDialog(
+                    //   context: context,
+                    //   builder: (BuildContext context) {
+                    //     return AlertDialog(
+                    //       title: const Text(
+                    //           'Please Check your Spam/Inbox for email verifications'),
+                    //       content:
+                    //           const Text('And once verified, please login.'),
+                    //       actions: [
+                    //         TextButton(
+                    //           onPressed: () {
+                    //             Navigator.of(context).pop();
+                    //           },
+                    //           child: const Text('Cancel'),
+                    //         ),
+                    //         TextButton(
+                    //           onPressed: () {
+                    //             Navigator.of(context).pushAndRemoveUntil(
+                    //               MaterialPageRoute(
+                    //                 builder: (context) => LoginScreen(),
+                    //               ),
+                    //               (route) => false,
+                    //             );
+                    //           },
+                    //           child: const Text('OK'),
+                    //         ),
+                    //       ],
+                    //     );
+                    //   },
+                    // );
+
+                    showAlertDialog(
+                      context: context,
+                      titleText:
+                          'Please Check your Spam/Inbox for email verifications',
+                      contentText: 'And once verified please login',
+                      onReject: () {
+                        Navigator.of(context).pop();
+                      },
+                      onApprove: () {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => LoginScreen(),
+                          ),
+                          (route) => false,
+                        );
+                      },
                     );
                   } catch (e) {
                     rethrow;

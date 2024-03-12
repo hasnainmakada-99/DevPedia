@@ -3,6 +3,7 @@ import 'package:devpedia/auth/auth_provider.dart';
 import 'package:devpedia/resources%20screens/all_resources.dart';
 import 'package:devpedia/resources%20screens/aws.dart';
 import 'package:devpedia/resources%20screens/jenkins.dart';
+import 'package:devpedia/screens/contact_screen.dart';
 import 'package:devpedia/screens/login_screen.dart';
 import 'package:devpedia/utils/alert_dialog.dart';
 import 'package:devpedia/utils/showAlert.dart';
@@ -21,10 +22,11 @@ class DashboardScreen extends ConsumerStatefulWidget {
 class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   int _selectedIndex = 0;
 
-  final List<Widget> _widgetOptions = const <Widget>[
+  final List<Widget> _widgetOptions = <Widget>[
     AllResources(),
     JenkinsResources(),
     awsresources(),
+    ContactScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -133,6 +135,16 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               onTap: () {
                 // Update the state of the app
                 _onItemTapped(2);
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Contact Us'),
+              selected: _selectedIndex == 3,
+              onTap: () {
+                // Update the state of the app
+                _onItemTapped(3);
                 // Then close the drawer
                 Navigator.pop(context);
               },
