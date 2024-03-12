@@ -1,16 +1,49 @@
-# devpedia
+# DevPedia
 
-A new Flutter project.
+DevPedia is a DevOps learning application designed to help beginners learn about various DevOps tools and methodologies. The application currently provides video resources, with plans to build a live coding playground for testing YAML code.
+
+## Features
+
+- **Video Resources**: Comprehensive video resources for learning DevOps tools and methodologies.
+- **Live AI ChatBot**: Powered by Gemini, the chatbot can answer queries about certain topics while the user is watching the resources.
+- **User Authentication**: Firebase is used for user authentication and verification.
+
+## Future Plans
+
+- **Live Coding Playground**: We're working on building a live coding playground where users can test YAML code.
+
+## Built With
+
+- [Flutter](https://flutter.dev): The UI was built using Flutter.
+- [Node.js](https://nodejs.org): Node.js was used for building the API of this project.
+- [Firebase](https://firebase.google.com): Firebase is used for user authentication and verification.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+To get a local copy up and running, follow these steps:
 
-A few resources to get you started if this is your first Flutter project:
+1. Clone the repo
+   ```sh
+   git clone https://github.com/hasnainmakada-99/DevPedia.git
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+2. Install all the Flutter Dependencies
+   ```sh
+   flutter pub get
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+3. Configure the firebase
+   ```sh
+   flutterfire configure
+
+4. Run the App
+   ```sh
+   flutter run
+
+## Contributing
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
+
+## Contact
+
+**Twitter Handle**: https://x.com/Hasnain_Makada
+
+**Mail**: [hasnainmakada@gmail.com](mailto:hasnainmakada@gmail.com)
+
