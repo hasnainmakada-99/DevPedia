@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 // Assuming existence
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_gemini/google_gemini.dart';
@@ -15,8 +16,9 @@ class ChatController extends StateNotifier<ChatState> {
   FirebaseAuth get auth => FirebaseAuth.instance;
 
   final Ref ref;
-  final geminiService =
-      GoogleGemini(apiKey: 'AIzaSyBPnIGkp6HzHm0S6eHGxHvPnNnojM6nSj0');
+  final geminiService = GoogleGemini(
+      apiKey: dotenv.env['GEMINI_KEY'] ??
+          'AIzaSyBPnIGkp6HzHm0S6eHGxHvPnNnojM6nSj0');
 
   void fromText(String query) async {
     state = state.copyWith(loading: true);
@@ -47,13 +49,12 @@ class ChatController extends StateNotifier<ChatState> {
 }
 
 class ChatState {
+  final bool loading;
+  final String? error;
   ChatState({
     this.loading = false,
     this.error,
   });
-
-  final bool loading;
-  final String? error;
 
   FirebaseFirestore get firestore => FirebaseFirestore.instance;
 

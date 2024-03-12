@@ -37,16 +37,15 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_cache_manager: ^3.3.1
+  flutter_dotenv: ^5.1.0
   flutter_launcher_icons: ^0.13.1
   flutter_rating_bar: ^4.0.1
   flutter_riverpod: ^2.4.9
   google_fonts: 6.1.0
   google_gemini: ^0.1.2
-
   share_plus: any
   shared_preferences: ^2.2.2
   step_progress_indicator: ^1.0.2
-
   url_launcher: any
   youtube_player_flutter: ^9.0.0
 
@@ -69,6 +68,7 @@ flutter:
     - assets/devpedia_icon.png
     - assets/random_image.webp
     - assets/devpedia_splash.gif
+    - .env
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see
