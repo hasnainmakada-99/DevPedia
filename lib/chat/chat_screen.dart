@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
-  final String? userEmail; // Add a userEmail parameter to the constructor
+  final String? userEmail;
 
   const ChatScreen({Key? key, required this.userEmail}) : super(key: key);
 
@@ -28,6 +28,14 @@ class _TextOnlyState extends ConsumerState<ChatScreen> {
   Widget build(BuildContext context) {
     final chatController = ref.watch(chatControllerProvider);
     final authRepoController = ref.watch(authRepositoryProvider);
+
+    // Check for null before accessing userEmail
+    final userEmail = authRepoController.userEmail;
+    if (userEmail == null) {
+      // Handle the case where userEmail is null (e.g., show an error message)
+      return Text('Error: User email not available');
+    }
+
     return Scaffold(
       body: Column(
         children: [
@@ -35,7 +43,7 @@ class _TextOnlyState extends ConsumerState<ChatScreen> {
             child: StreamBuilder<List<Map<String, dynamic>>>(
               stream: chatController.firestore
                   .collection('chats')
-                  .where('user', isEqualTo: authRepoController.userEmail)
+                  .where('user', isEqualTo: userEmail)
                   .orderBy('timestamp', descending: false)
                   .snapshots()
                   .map((event) => event.docs.map((e) => e.data()).toList()),
@@ -98,12 +106,9 @@ class _TextOnlyState extends ConsumerState<ChatScreen> {
                       icon: loading
                           ? CircularProgressIndicator()
                           : Icon(Icons.send),
-                      onPressed: () {
-                        ref
-                            .watch(chatControllerProvider.notifier)
-                            .fromText(_textController.text);
-                        _textController.clear();
-                      },
+                      onPressed: () => ref
+                          .watch(chatControllerProvider.notifier)
+                          .fromText(_textController.text),
                     );
                   },
                 ),

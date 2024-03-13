@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-// Assuming existence
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_gemini/google_gemini.dart';
+import 'package:uuid/uuid.dart';
 
 final chatControllerProvider =
     StateNotifierProvider<ChatController, ChatState>((ref) {
@@ -16,24 +16,32 @@ class ChatController extends StateNotifier<ChatState> {
   FirebaseAuth get auth => FirebaseAuth.instance;
 
   final Ref ref;
-  final geminiService = GoogleGemini(apiKey: dotenv.env['GOOGLE_API_KEY']!);
+  final geminiService = GoogleGemini(
+    apiKey: dotenv.env['GEMINI_KEY'] ?? 'YOUR_GEMINI_API_KEY',
+  );
+  final uuid = const Uuid();
 
-  void fromText(String query) async {
+  Future<void> fromText(String query) async {
     state = state.copyWith(loading: true);
+    query = query.trim(); // Ignore leading and trailing whitespaces
 
     try {
-      final response = await geminiService.generateFromText(query);
       final timestamp = DateTime.now();
 
       await FirebaseFirestore.instance.collection('chats').add({
-        'user': auth.currentUser!.email,
+        'user': auth.currentUser!.email!,
         'role': 'You',
         'text': query,
         'timestamp': timestamp,
       });
 
+      // Delay the response generation for 2 seconds
+      await Future.delayed(Duration(seconds: 2));
+
+      final response = await geminiService.generateFromText(query);
+
       await FirebaseFirestore.instance.collection('chats').add({
-        'user': auth.currentUser!.email,
+        'user': auth.currentUser!.email!,
         'role': 'DevAi',
         'text': response.text,
         'timestamp': timestamp,

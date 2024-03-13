@@ -45,7 +45,7 @@ dependencies:
   google_gemini: ^0.1.2
   share_plus: any
   shared_preferences: ^2.2.2
-
+  uuid: ^4.3.3
   url_launcher: any
   youtube_player_flutter: ^9.0.0
 
