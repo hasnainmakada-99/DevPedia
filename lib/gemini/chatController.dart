@@ -16,9 +16,7 @@ class ChatController extends StateNotifier<ChatState> {
   FirebaseAuth get auth => FirebaseAuth.instance;
 
   final Ref ref;
-  final geminiService = GoogleGemini(
-      apiKey: dotenv.env['GEMINI_KEY'] ??
-          'AIzaSyBPnIGkp6HzHm0S6eHGxHvPnNnojM6nSj0');
+  final geminiService = GoogleGemini(apiKey: dotenv.env['GOOGLE_API_KEY']!);
 
   void fromText(String query) async {
     state = state.copyWith(loading: true);
