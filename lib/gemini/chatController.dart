@@ -17,7 +17,7 @@ class ChatController extends StateNotifier<ChatState> {
 
   final Ref ref;
   final geminiService = GoogleGemini(
-    apiKey: dotenv.env['GEMINI_KEY'] ?? 'YOUR_GEMINI_API_KEY',
+    apiKey: dotenv.env['GEMINI_KEY'] ?? '',
   );
   final uuid = const Uuid();
 
@@ -28,23 +28,26 @@ class ChatController extends StateNotifier<ChatState> {
     try {
       final timestamp = DateTime.now();
 
-      await FirebaseFirestore.instance.collection('chats').add({
+      // Store user's query
+      final userDocRef =
+          await FirebaseFirestore.instance.collection('chats').add({
         'user': auth.currentUser!.email!,
         'role': 'You',
         'text': query,
         'timestamp': timestamp,
       });
 
-      // Delay the response generation for 2 seconds
-      await Future.delayed(Duration(seconds: 2));
-
+      // Generate response using Gemini
       final response = await geminiService.generateFromText(query);
 
+      // Store Gemini response
       await FirebaseFirestore.instance.collection('chats').add({
         'user': auth.currentUser!.email!,
         'role': 'DevAi',
         'text': response.text,
         'timestamp': timestamp,
+        // Reference the user's query document
+        'parent': userDocRef,
       });
 
       state = state.copyWith(loading: false);

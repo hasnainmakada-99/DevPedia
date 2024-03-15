@@ -1,7 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:devpedia/auth/auth_provider.dart';
 import 'package:devpedia/gemini/chatController.dart';
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
@@ -24,6 +23,29 @@ class _TextOnlyState extends ConsumerState<ChatScreen> {
     super.dispose();
   }
 
+  void _sendMessage() {
+    final text = _textController.text;
+    if (text.isNotEmpty) {
+      ref.watch(chatControllerProvider.notifier).fromText(text);
+      _textController.clear();
+      _scrollToBottom();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Cannot submit empty text'),
+        ),
+      );
+    }
+  }
+
+  void _scrollToBottom() {
+    _controller.animateTo(
+      _controller.position.maxScrollExtent,
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final chatController = ref.watch(chatControllerProvider);
@@ -32,25 +54,30 @@ class _TextOnlyState extends ConsumerState<ChatScreen> {
     // Check for null before accessing userEmail
     final userEmail = authRepoController.userEmail;
     if (userEmail == null) {
-      // Handle the case where userEmail is null (e.g., show an error message)
       return Text('Error: User email not available');
     }
 
     return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            child: StreamBuilder<List<Map<String, dynamic>>>(
-              stream: chatController.firestore
-                  .collection('chats')
-                  .where('user', isEqualTo: userEmail)
-                  .orderBy('timestamp', descending: false)
-                  .snapshots()
-                  .map((event) => event.docs.map((e) => e.data()).toList()),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  final chatList = snapshot.data!;
-                  return ListView.builder(
+      body: StreamBuilder<List<Map<String, dynamic>>>(
+        stream: chatController.firestore
+            .collection('chats')
+            .where('user', isEqualTo: userEmail)
+            .orderBy('timestamp',
+                descending: false) // Sort ascending by timestamp
+            .snapshots()
+            .map(
+              (event) => event.docs.map((e) => e.data()).toList(),
+            ),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final chatList = snapshot.data!;
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              _scrollToBottom();
+            });
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
                     controller: _controller,
                     itemCount: chatList.length,
                     padding: const EdgeInsets.only(bottom: 20),
@@ -65,57 +92,56 @@ class _TextOnlyState extends ConsumerState<ChatScreen> {
                         subtitle: Text(chat["text"]!),
                       );
                     },
-                  );
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else {
-                  return const Center(child: Text('No Chats Found'));
-                }
-              },
-            ),
-          ),
-          Container(
-            alignment: Alignment.bottomRight,
-            margin: const EdgeInsets.all(20),
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              border: Border.all(color: Colors.grey),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _textController,
-                    decoration: InputDecoration(
-                      hintText: "Type a message",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide.none,
-                      ),
-                      fillColor: Colors.transparent,
-                    ),
-                    maxLines: null,
-                    keyboardType: TextInputType.multiline,
                   ),
                 ),
-                Consumer(
-                  builder: (context, watch, child) {
-                    final loading = chatController.loading;
-                    return IconButton(
-                      icon: loading
-                          ? CircularProgressIndicator()
-                          : Icon(Icons.send),
-                      onPressed: () => ref
-                          .watch(chatControllerProvider.notifier)
-                          .fromText(_textController.text),
-                    );
-                  },
+                Container(
+                  alignment: Alignment.bottomRight,
+                  margin: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    border: Border.all(color: Colors.grey),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _textController,
+                          decoration: InputDecoration(
+                            hintText: "Type a message",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide.none,
+                            ),
+                            fillColor: Colors.transparent,
+                          ),
+                          maxLines: null,
+                          keyboardType: TextInputType.multiline,
+                          onSubmitted: (_) => _sendMessage(),
+                        ),
+                      ),
+                      Consumer(
+                        builder: (context, watch, child) {
+                          final loading = chatController.loading;
+                          return IconButton(
+                            icon: loading
+                                ? CircularProgressIndicator()
+                                : Icon(Icons.send),
+                            onPressed: _sendMessage,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ],
-            ),
-          ),
-        ],
+            );
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            return const Center(child: Text('No Chats Found'));
+          }
+        },
       ),
     );
   }
