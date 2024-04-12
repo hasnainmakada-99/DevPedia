@@ -17,7 +17,8 @@ class ChatController extends StateNotifier<ChatState> {
 
   final Ref ref;
   final geminiService = GoogleGemini(
-    apiKey: dotenv.env['GEMINI_KEY'] ?? '',
+    apiKey:
+        dotenv.env['GEMINI_KEY'] ?? 'AIzaSyBPnIGkp6HzHm0S6eHGxHvPnNnojM6nSj0',
   );
   final uuid = const Uuid();
 

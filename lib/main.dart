@@ -1,8 +1,9 @@
 import 'package:devpedia/auth/auth_provider.dart';
+import 'package:devpedia/chat/test_chat.dart';
 import 'package:devpedia/firebase_options.dart';
 import 'package:devpedia/screens/dashboard_screen.dart';
 import 'package:devpedia/screens/login_screen.dart';
-import 'package:devpedia/utils/alert_dialog.dart';
+// import 'package:devpedia/utils/alert_dialog.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
         gifPath: 'assets/devpedia_logo.png',
         gifWidth: 269,
         gifHeight: 474,
-        nextScreen: const MyHomePage(),
+        nextScreen: const ChatScreen1(),
         duration: const Duration(milliseconds: 1000),
         onInit: () async {
           debugPrint("onInit");
