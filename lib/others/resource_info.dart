@@ -1,5 +1,6 @@
 import 'package:devpedia/auth/auth_provider.dart';
 import 'package:devpedia/chat/chat_screen.dart';
+import 'package:devpedia/chat/test_chat.dart';
 import 'package:devpedia/others/feedback_screen.dart';
 
 import 'package:flutter/material.dart';
@@ -147,7 +148,7 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo>
                     );
                   },
                 ),
-                ChatScreen(userEmail: authRepositoryController.userEmail),
+                ChatScreen1(userEmail: authRepositoryController.userEmail!),
               ],
             ),
           ),

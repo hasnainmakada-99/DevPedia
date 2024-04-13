@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         gifPath: 'assets/devpedia_logo.png',
         gifWidth: 269,
         gifHeight: 474,
-        nextScreen: const ChatScreen1(),
+        nextScreen: const MyHomePage(),
         duration: const Duration(milliseconds: 1000),
         onInit: () async {
           debugPrint("onInit");
