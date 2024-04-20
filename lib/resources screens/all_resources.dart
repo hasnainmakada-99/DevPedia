@@ -24,16 +24,13 @@ class _AllResourcesState extends ConsumerState<AllResources> {
   void initState() {
     super.initState();
     resources = loadCachedVideos();
-    preloadData();
   }
 
-  Future<void> preloadData() async {
-    final videos = await fetchVideos().first;
-    // Save the fetched videos to the cache
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('cachedVideos', jsonEncode(videos));
-    resources = Stream.value(videos);
-  }
+  // Future<void> preloadData() async {
+  //   final videos = await fetchVideos().first;
+
+  //   resources = Stream.value(videos);
+  // }
 
   Future<void> refreshVideos() async {
     setState(() {

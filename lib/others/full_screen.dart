@@ -11,30 +11,34 @@ class FullscreenVideo extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          Center(
-            child: YoutubePlayerBuilder(
-              player: YoutubePlayer(
-                controller: controller,
-                showVideoProgressIndicator: true,
-                progressIndicatorColor: Colors.blueAccent,
-                progressColors: const ProgressBarColors(
-                  playedColor: Colors.blue,
-                  handleColor: Colors.blueAccent,
-                ),
+          YoutubePlayerBuilder(
+            player: YoutubePlayer(
+              controller: controller,
+              showVideoProgressIndicator: true,
+              progressIndicatorColor: Colors.blueAccent,
+              progressColors: const ProgressBarColors(
+                playedColor: Colors.blue,
+                handleColor: Colors.blueAccent,
               ),
-              builder: (context, player) {
-                return Stack(
-                  children: [
-                    player,
-                    IconButton(
-                      icon: const Icon(Icons.fullscreen_exit),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ],
-                );
-              },
+              bottomActions: [
+                CurrentPosition(),
+                ProgressBar(isExpanded: true),
+                RemainingDuration(),
+                FullScreenButton(controller: controller),
+              ],
             ),
-          )
+            builder: (context, player) {
+              return Stack(
+                children: [
+                  player,
+                  IconButton(
+                    icon: const Icon(Icons.fullscreen_exit),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              );
+            },
+          ),
         ],
       ),
     );

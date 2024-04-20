@@ -117,13 +117,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         isLoading = false;
       });
 
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => DashboardScreen(),
-        ),
-        (route) => false,
-      );
+      // Navigator.pushAndRemoveUntil(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => DashboardScreen(),
+      //   ),
+      //   (route) => false,
+      // );
     } catch (e) {
       setState(() {
         isLoading = false;

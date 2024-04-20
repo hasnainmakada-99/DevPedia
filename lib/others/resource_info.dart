@@ -1,9 +1,7 @@
 import 'package:devpedia/auth/auth_provider.dart';
-import 'package:devpedia/chat/chat_screen.dart';
+
 import 'package:devpedia/chat/test_chat.dart';
 import 'package:devpedia/others/feedback_screen.dart';
-import 'package:devpedia/others/full_screen.dart';
-import 'package:fullscreen_window/fullscreen_window.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -62,15 +60,10 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo>
     return PopScope(
       child: OrientationBuilder(
         builder: (BuildContext context, Orientation orientation) {
-          if (orientation == Orientation.landscape) {
-            return Scaffold(
-              body: FullscreenVideo(controller: _controller),
-            );
-          }
+          if (orientation == Orientation.landscape) {}
           return Scaffold(
             appBar: AppBar(
               title: Text(widget.resourceTitle),
-              automaticallyImplyLeading: !_controller.value.isFullScreen,
             ),
             body: Column(
               children: [
@@ -93,7 +86,10 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo>
                             CurrentPosition(),
                             ProgressBar(isExpanded: true),
                             RemainingDuration(),
-                            FullScreenButton(controller: _controller),
+                            FullScreenButton(
+                              controller: _controller,
+                              color: Colors.blueAccent,
+                            ),
                           ],
                           controller: _controller,
                           showVideoProgressIndicator: true,
@@ -187,3 +183,84 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo>
     super.dispose();
   }
 }
+
+// import 'package:flutter/material.dart';
+// import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+
+// class ResourceInfo extends StatefulWidget {
+//   const ResourceInfo({Key? key}) : super(key: key);
+
+//   @override
+//   _ResourceInfoState createState() => _ResourceInfoState();
+// }
+
+// class _ResourceInfoState extends State<ResourceInfo>
+//     with SingleTickerProviderStateMixin {
+//   late YoutubePlayerController _controller;
+//   var ratingText = '';
+//   late TabController _tabController; // Declare the TabController
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     _controller = YoutubePlayerController(
+//       initialVideoId: YoutubePlayer.convertUrlToId(
+//               'https://youtu.be/kdL7gagm4o0?si=Q_CJThgXy6-M1E5H') ??
+//           '',
+//       flags: const YoutubePlayerFlags(
+//         autoPlay: false,
+//         mute: false,
+//         showLiveFullscreenButton: true,
+//       ),
+//     );
+//     _tabController =
+//         TabController(length: 2, vsync: this); // Initialize the TabController
+//   }
+
+  
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return PopScope(
+//       // onWillPop: _onWillPop,
+//       canPop: true,
+//       child: OrientationBuilder(
+//         builder: (BuildContext context, Orientation orientation) {
+//           if (orientation == Orientation.landscape) {
+//             return Scaffold(
+//               body: youtubeHierarchy(),
+//             );
+//           } else {
+//             return Scaffold(
+//               appBar: AppBar(
+//                 title: Text('Title'),
+//               ),
+//               body: youtubeHierarchy(),
+//             );
+//           }
+//         },
+//       ),
+//     );
+//   }
+
+//   Widget youtubeHierarchy() {
+//     return Container(
+//       child: Align(
+//         alignment: Alignment.center,
+//         child: FittedBox(
+//           fit: BoxFit.cover,
+//           child: YoutubePlayer(
+//             controller: _controller,
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+
+//   @override
+//   void dispose() {
+//     _controller.dispose();
+//     _tabController.dispose(); // Dispose the TabController
+//     super.dispose();
+//   }
+// }
