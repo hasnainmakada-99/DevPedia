@@ -1,6 +1,6 @@
 import 'package:devpedia/modals/fetch_resources.dart';
 import 'package:devpedia/modals/resource_modal.dart';
-import 'package:devpedia/others/resource_info.dart';
+import 'package:devpedia/resources screens/resource_info.dart';
 import 'package:devpedia/utils/resource_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

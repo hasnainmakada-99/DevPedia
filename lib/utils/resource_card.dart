@@ -1,4 +1,4 @@
-import 'package:devpedia/others/resource_info.dart';
+import 'package:devpedia/resources%20screens/resource_info.dart';
 import 'package:devpedia/utils/shareResource_func.dart';
 import 'package:flutter/material.dart';
 
