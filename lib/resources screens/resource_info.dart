@@ -1,134 +1,134 @@
-import 'package:devpedia/auth/auth_provider.dart';
-import 'package:devpedia/chat/test_chat.dart';
-import 'package:devpedia/others/feedback_screen.dart';
-import 'package:devpedia/others/full_screen.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:pod_player/pod_player.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+// import 'package:devpedia/auth/auth_provider.dart';
+// import 'package:devpedia/chat/test_chat.dart';
+// import 'package:devpedia/others/feedback_screen.dart';
+// import 'package:devpedia/others/full_screen.dart';
+// import 'package:flutter/cupertino.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter/services.dart';
+// import 'package:flutter/widgets.dart';
+// import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import 'package:google_fonts/google_fonts.dart';
+// import 'package:pod_player/pod_player.dart';
+// import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class ResourceInfo extends ConsumerStatefulWidget {
-  final String resourceTitle;
-  final String resourceURL;
-  final String resourceDescription;
-  final String channelName;
-  final String publishedDate;
-  final String resourceRelatedTo;
-  const ResourceInfo({
-    Key? key,
-    required this.resourceURL,
-    required this.resourceDescription,
-    required this.resourceTitle,
-    required this.channelName,
-    required this.publishedDate,
-    required this.resourceRelatedTo,
-  }) : super(key: key);
+// class ResourceInfo extends ConsumerStatefulWidget {
+//   final String resourceTitle;
+//   final String resourceURL;
+//   final String resourceDescription;
+//   final String channelName;
+//   final String publishedDate;
+//   final String resourceRelatedTo;
+//   const ResourceInfo({
+//     Key? key,
+//     required this.resourceURL,
+//     required this.resourceDescription,
+//     required this.resourceTitle,
+//     required this.channelName,
+//     required this.publishedDate,
+//     required this.resourceRelatedTo,
+//   }) : super(key: key);
 
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ResourceInfoState();
-}
+//   @override
+//   ConsumerState<ConsumerStatefulWidget> createState() => _ResourceInfoState();
+// }
 
-class _ResourceInfoState extends ConsumerState<ResourceInfo>
-    with SingleTickerProviderStateMixin {
-  var ratingText = '';
-  late TabController _tabController; // Delare the TabController
-  int _currentIndex = 0;
-  late final PodPlayerController controller;
-  @override
-  void initState() {
-    super.initState();
-    controller = PodPlayerController(
-      playVideoFrom: PlayVideoFrom.youtube(
-        widget.resourceURL ?? '',
-      ),
-      podPlayerConfig: const PodPlayerConfig(autoPlay: false),
-    )..initialise();
-    // Initialize the TabController
-  }
+// class _ResourceInfoState extends ConsumerState<ResourceInfo>
+//     with SingleTickerProviderStateMixin {
+//   var ratingText = '';
+//   late TabController _tabController; // Delare the TabController
+//   int _currentIndex = 0;
+//   late final PodPlayerController controller;
+//   @override
+//   void initState() {
+//     super.initState();
+//     controller = PodPlayerController(
+//       playVideoFrom: PlayVideoFrom.youtube(
+//         widget.resourceURL ?? '',
+//       ),
+//       podPlayerConfig: const PodPlayerConfig(autoPlay: false),
+//     )..initialise();
+//     // Initialize the TabController
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    final authRepositoryController = ref.watch(authRepositoryProvider);
+//   @override
+//   Widget build(BuildContext context) {
+//     final authRepositoryController = ref.watch(authRepositoryProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.resourceTitle),
-      ),
-      body: Column(
-        children: [
-          PodVideoPlayer(controller: controller),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Text(
-                  widget.resourceDescription,
-                  style: GoogleFonts.lato(
-                    textStyle: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Text('Channel: ${widget.channelName}'),
-          Text("Published Date: ${widget.publishedDate}"),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => FeedbackScreen(
-                    resourceRelatedTo: widget.resourceRelatedTo,
-                  ),
-                ),
-                (route) => true,
-              );
-            },
-            child: const Text('Give Feedback on this Resource'),
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(
-            () {
-              _currentIndex = index;
-            },
-          );
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.video_library),
-            label: 'Video',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
-            label: 'DevAI',
-          ),
-        ],
-      ),
-    );
-  }
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text(widget.resourceTitle),
+//       ),
+//       body: Column(
+//         children: [
+//           PodVideoPlayer(controller: controller),
+//           Expanded(
+//             child: SingleChildScrollView(
+//               child: Container(
+//                 padding: const EdgeInsets.all(10),
+//                 decoration: BoxDecoration(
+//                   color: Colors.grey[200],
+//                   borderRadius: BorderRadius.circular(10),
+//                 ),
+//                 child: Text(
+//                   widget.resourceDescription,
+//                   style: GoogleFonts.lato(
+//                     textStyle: const TextStyle(
+//                       color: Colors.black,
+//                       fontSize: 20,
+//                     ),
+//                   ),
+//                 ),
+//               ),
+//             ),
+//           ),
+//           Text('Channel: ${widget.channelName}'),
+//           Text("Published Date: ${widget.publishedDate}"),
+//           ElevatedButton(
+//             onPressed: () {
+//               Navigator.pushAndRemoveUntil(
+//                 context,
+//                 MaterialPageRoute(
+//                   builder: (context) => FeedbackScreen(
+//                     resourceRelatedTo: widget.resourceRelatedTo,
+//                   ),
+//                 ),
+//                 (route) => true,
+//               );
+//             },
+//             child: const Text('Give Feedback on this Resource'),
+//           ),
+//         ],
+//       ),
+//       bottomNavigationBar: BottomNavigationBar(
+//         currentIndex: _currentIndex,
+//         onTap: (index) {
+//           setState(
+//             () {
+//               _currentIndex = index;
+//             },
+//           );
+//         },
+//         items: const [
+//           BottomNavigationBarItem(
+//             icon: Icon(Icons.video_library),
+//             label: 'Video',
+//           ),
+//           BottomNavigationBarItem(
+//             icon: Icon(Icons.chat),
+//             label: 'DevAI',
+//           ),
+//         ],
+//       ),
+//     );
+//   }
 
-  @override
-  void dispose() {
-    controller.dispose();
-    _tabController.dispose(); // Dispose the TabController
-    super.dispose();
-  }
-}
+//   @override
+//   void dispose() {
+//     controller.dispose();
+//     _tabController.dispose(); // Dispose the TabController
+//     super.dispose();
+//   }
+// }
 
 // import 'package:flutter/material.dart';
 // import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -163,28 +163,26 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo>
 //         TabController(length: 2, vsync: this); // Initialize the TabController
 //   }
 
-  
-
 //   @override
 //   Widget build(BuildContext context) {
 //     return PopScope(
 //       // onWillPop: _onWillPop,
 //       canPop: true,
 //       child: OrientationBuilder(
-        // builder: (BuildContext context, Orientation orientation) {
-        //   if (orientation == Orientation.landscape) {
-        //     return Scaffold(
-        //       body: youtubeHierarchy(),
-        //     );
-        //   } else {
-        //     return Scaffold(
-        //       appBar: AppBar(
-        //         title: Text('Title'),
-        //       ),
-        //       body: youtubeHierarchy(),
-        //     );
-        //   }
-        // },
+// builder: (BuildContext context, Orientation orientation) {
+//   if (orientation == Orientation.landscape) {
+//     return Scaffold(
+//       body: youtubeHierarchy(),
+//     );
+//   } else {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Title'),
+//       ),
+//       body: youtubeHierarchy(),
+//     );
+//   }
+// },
 //       ),
 //     );
 //   }
@@ -210,3 +208,242 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo>
 //     super.dispose();
 //   }
 // }
+
+import 'package:devpedia/auth/auth_provider.dart';
+import 'package:devpedia/chat/chat_screen.dart';
+import 'package:devpedia/chat/test_chat.dart';
+import 'package:devpedia/others/feedback_screen.dart';
+
+import 'package:flutter/material.dart';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:google_fonts/google_fonts.dart';
+import 'package:pod_player/pod_player.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+
+class ResourceInfo extends ConsumerStatefulWidget {
+  final String resourceTitle;
+  final String resourceURL;
+  final String resourceDescription;
+  final String channelName;
+  final String publishedDate;
+  final String resourceRelatedTo;
+  const ResourceInfo({
+    Key? key,
+    required this.resourceURL,
+    required this.resourceDescription,
+    required this.resourceTitle,
+    required this.channelName,
+    required this.publishedDate,
+    required this.resourceRelatedTo,
+  }) : super(key: key);
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _ResourceInfoState();
+}
+
+class _ResourceInfoState extends ConsumerState<ResourceInfo>
+    with SingleTickerProviderStateMixin {
+  // late YoutubePlayerController _controller;
+  var ratingText = '';
+  late TabController _tabController; // Delare the TabController
+  late final PodPlayerController controller;
+  @override
+  void initState() {
+    super.initState();
+    // _controller = YoutubePlayerController(
+    //   initialVideoId: YoutubePlayer.convertUrlToId(widget.resourceURL) ?? '',
+    //   flags: const YoutubePlayerFlags(
+    //     autoPlay: false,
+    //     mute: false,
+    //     showLiveFullscreenButton: true,
+    //   ),
+    // );
+
+    controller = PodPlayerController(
+      playVideoFrom: PlayVideoFrom.youtube(
+        widget.resourceURL ?? '',
+      ),
+      podPlayerConfig: const PodPlayerConfig(autoPlay: false),
+    )..initialise();
+    _tabController =
+        TabController(length: 2, vsync: this); // Initialize the TabController
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final authRepositoryController = ref.watch(authRepositoryProvider);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.resourceTitle),
+        // automaticallyImplyLeading: !_controller.value.isFullScreen,
+      ),
+      body: Column(
+        children: [
+          TabBar(
+            // Add the TabBar widget
+            controller: _tabController, // Assign the TabController
+            tabs: const [
+              Tab(text: 'Video'), // Add a tab for the video
+              Tab(text: 'DevAi'), // Add a tab for the chat
+            ],
+          ),
+          Expanded(
+            child: TabBarView(
+              // Add the TabBarView widget
+              controller: _tabController, // Assign the TabController
+              children: [
+                // YoutubePlayerBuilder(
+                //   player: YoutubePlayer(
+                //     controller: _controller,
+                //     showVideoProgressIndicator: true,
+                //     progressIndicatorColor: Colors.blueAccent,
+                //     progressColors: const ProgressBarColors(
+                //       playedColor: Colors.blue,
+                //       handleColor: Colors.blueAccent,
+                //     ),
+                //   ),
+                //   builder: (context, player) {
+                //     return Column(
+                //       children: [
+                //         player,
+                //         // Add video description here
+                //         Expanded(
+                //           child: SingleChildScrollView(
+                //             child: Container(
+                //               padding: const EdgeInsets.all(10),
+                //               decoration: BoxDecoration(
+                //                 color: Colors.grey[200],
+                //                 borderRadius: BorderRadius.circular(10),
+                //               ),
+                //               child: Text(
+                //                 widget.resourceDescription,
+                //                 style: GoogleFonts.lato(
+                //                   textStyle: const TextStyle(
+                //                     color: Colors.black,
+                //                     fontSize: 20,
+                //                   ),
+                //                 ),
+                //               ),
+                //             ),
+                //           ),
+                //         ),
+
+                //         const SizedBox(
+                //           height: 2,
+                //         ),
+
+                //         Text('Channel: ${widget.channelName}'),
+                //         const SizedBox(
+                //           height: 2,
+                //         ),
+
+                //         Text("Published Date: ${widget.publishedDate}"),
+                //         const SizedBox(
+                //           height: 2,
+                //         ),
+
+                //         const SizedBox(
+                //           height: 2,
+                //         ),
+
+                //         ElevatedButton(
+                //           onPressed: () {
+                //             Navigator.pushAndRemoveUntil(
+                //               context,
+                //               MaterialPageRoute(
+                //                 builder: (context) => FeedbackScreen(
+                //                   resourceRelatedTo: widget.resourceRelatedTo,
+                //                 ),
+                //               ),
+                //               (route) => true,
+                //             );
+                //           },
+                //           child: const Text('Give Feedback on this Resource'),
+                //         ),
+                //       ],
+                //     );
+                //   },
+                // ),
+
+                Builder(
+                  builder: (context) {
+                    return Column(
+                      children: [
+                        PodVideoPlayer(controller: controller),
+                        // Add video description here
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                widget.resourceDescription,
+                                style: GoogleFonts.lato(
+                                  textStyle: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(
+                          height: 2,
+                        ),
+
+                        Text('Channel: ${widget.channelName}'),
+                        const SizedBox(
+                          height: 2,
+                        ),
+
+                        Text("Published Date: ${widget.publishedDate}"),
+                        const SizedBox(
+                          height: 2,
+                        ),
+
+                        const SizedBox(
+                          height: 2,
+                        ),
+
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => FeedbackScreen(
+                                  resourceRelatedTo: widget.resourceRelatedTo,
+                                ),
+                              ),
+                              (route) => true,
+                            );
+                          },
+                          child: const Text('Give Feedback on this Resource'),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                ChatScreen1(userEmail: authRepositoryController.userEmail!),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    _tabController.dispose(); // Dispose the TabController
+    super.dispose();
+  }
+}
