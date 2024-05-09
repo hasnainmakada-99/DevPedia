@@ -4,7 +4,7 @@ import 'package:devpedia/modals/resource_modal.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Stream<List<ResourceModal>> fetchVideos() async* {
+Future<List<ResourceModal>> fetchVideos() async {
   var dio = Dio();
   final response =
       await dio.get('http://devpedia-uqxf.onrender.com/api/get-resources');
@@ -17,21 +17,21 @@ Stream<List<ResourceModal>> fetchVideos() async* {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('cachedVideos', jsonEncode(list));
 
-    yield list.map((model) => ResourceModal.fromJson(model)).toList();
+    return list.map((model) => ResourceModal.fromJson(model)).toList();
   } else {
     // If the server returns an unsuccessful response code, throw an exception.
     throw Exception('Failed to load videos');
   }
 }
 
-Stream<List<ResourceModal>> loadCachedVideos() async* {
+Future<List<ResourceModal>> loadCachedVideos() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? cachedVideos = prefs.getString('cachedVideos');
 
   if (cachedVideos != null) {
     Iterable list = jsonDecode(cachedVideos);
-    yield list.map((model) => ResourceModal.fromJson(model)).toList();
+    return list.map((model) => ResourceModal.fromJson(model)).toList();
   } else {
-    yield [];
+    return [];
   }
 }

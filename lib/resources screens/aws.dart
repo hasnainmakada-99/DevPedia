@@ -15,7 +15,7 @@ class awsresources extends ConsumerStatefulWidget {
 
 // ignore: camel_case_types
 class _awsresourcesState extends ConsumerState<awsresources> {
-  late final Stream<List<ResourceModal>> resources;
+  late final Future<List<ResourceModal>> resources;
   @override
   void initState() {
     super.initState();
@@ -32,8 +32,8 @@ class _awsresourcesState extends ConsumerState<awsresources> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: refreshVideos,
-      child: StreamBuilder<List<ResourceModal>>(
-        stream: resources,
+      child: FutureBuilder<List<ResourceModal>>(
+        future: resources,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final jenkinsResources = snapshot.data!

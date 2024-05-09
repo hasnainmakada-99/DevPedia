@@ -14,7 +14,7 @@ class JenkinsResources extends ConsumerStatefulWidget {
 }
 
 class _JenkinsResourcesState extends ConsumerState<JenkinsResources> {
-  late final Stream<List<ResourceModal>> resources;
+  late final Future<List<ResourceModal>> resources;
   @override
   void initState() {
     super.initState();
@@ -31,8 +31,8 @@ class _JenkinsResourcesState extends ConsumerState<JenkinsResources> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: refreshVideos,
-      child: StreamBuilder<List<ResourceModal>>(
-        stream: resources,
+      child: FutureBuilder<List<ResourceModal>>(
+        future: resources,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final jenkinsResources = snapshot.data!

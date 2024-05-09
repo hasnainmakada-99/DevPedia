@@ -6,8 +6,6 @@ import 'package:devpedia/resources screens/resource_info.dart';
 import 'package:devpedia/utils/resource_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AllResources extends ConsumerStatefulWidget {
@@ -18,19 +16,13 @@ class AllResources extends ConsumerStatefulWidget {
 }
 
 class _AllResourcesState extends ConsumerState<AllResources> {
-  late final Stream<List<ResourceModal>> resources;
+  late Future<List<ResourceModal>> resources;
 
   @override
   void initState() {
     super.initState();
-    resources = loadCachedVideos();
+    resources = fetchVideos();
   }
-
-  // Future<void> preloadData() async {
-  //   final videos = await fetchVideos().first;
-
-  //   resources = Stream.value(videos);
-  // }
 
   Future<void> refreshVideos() async {
     setState(() {
@@ -42,8 +34,8 @@ class _AllResourcesState extends ConsumerState<AllResources> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () => refreshVideos(),
-      child: StreamBuilder<List<ResourceModal>>(
-        stream: resources,
+      child: FutureBuilder<List<ResourceModal>>(
+        future: resources,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data!.isEmpty) {
