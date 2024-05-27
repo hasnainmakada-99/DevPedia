@@ -39,11 +39,13 @@ dependencies:
   flutter_cache_manager: ^3.3.1
   flutter_dotenv: ^5.1.0
   flutter_launcher_icons: ^0.13.1
+  
   flutter_rating_bar: ^4.0.1
   flutter_riverpod: ^2.4.9
   fullscreen_window: ^1.0.4
   google_fonts: 6.1.0
   google_gemini: ^0.1.2
+  google_generative_ai: ^0.4.1
   pod_player: ^0.2.2
   share_plus: any
   shared_preferences: any
