@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_gemini/google_gemini.dart';
+
 import 'package:uuid/uuid.dart';
 
 final chatControllerProvider =
@@ -17,9 +17,9 @@ class ChatController extends StateNotifier<ChatState> {
 
   final Ref ref;
 
-  final geminiService = GoogleGemini(
-    apiKey: '',
-  );
+  // final geminiService = GoogleGemini(
+  //   apiKey: '',
+  // );
   final uuid = const Uuid();
 
   Future<void> fromText(String query) async {
@@ -39,13 +39,13 @@ class ChatController extends StateNotifier<ChatState> {
       });
 
       // Generate response using Gemini
-      final response = await geminiService.generateFromText(query);
+      // final response = await geminiService.generateFromText(query);
 
       // Store Gemini response
       await FirebaseFirestore.instance.collection('chats').add({
         'user': auth.currentUser!.email!,
         'role': 'DevAi',
-        'text': response.text,
+        // 'text': response.text,
         'timestamp': timestamp,
         // Reference the user's query document
         'parent': userDocRef,

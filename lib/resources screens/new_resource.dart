@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:pod_player/pod_player.dart';
 
 class NewResourceInfoScreen extends StatefulWidget {

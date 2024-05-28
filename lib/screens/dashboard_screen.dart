@@ -1,12 +1,10 @@
 import 'package:devpedia/auth/auth_provider.dart';
+import 'package:devpedia/random_code/login_register.dart';
 
 import 'package:devpedia/resources%20screens/all_resources.dart';
 import 'package:devpedia/resources%20screens/aws.dart';
 import 'package:devpedia/resources%20screens/jenkins.dart';
 import 'package:devpedia/screens/contact_screen.dart';
-import 'package:devpedia/screens/login_screen.dart';
-import 'package:devpedia/utils/alert_dialog.dart';
-import 'package:devpedia/utils/showAlert.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -66,7 +64,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                                 ref.watch(authRepositoryProvider).signOut();
                                 Navigator.of(context).pushAndRemoveUntil(
                                   MaterialPageRoute(
-                                    builder: (context) => LoginScreen(),
+                                    builder: (context) => const LoginRegister(),
                                   ),
                                   (route) => false,
                                 );
@@ -103,7 +101,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    '${authStateChangesNotifier.value?.email ?? ''}',
+                    authStateChangesNotifier.value?.email ?? '',
                     style: const TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ],

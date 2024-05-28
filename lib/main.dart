@@ -1,12 +1,11 @@
 import 'package:devpedia/auth/auth_provider.dart';
 import 'package:devpedia/chat/test_chat.dart';
 import 'package:devpedia/firebase_options.dart';
-import 'package:devpedia/random_code/login_design.dart';
+import 'package:devpedia/random_code/login_register.dart';
 
 import 'package:devpedia/resources%20screens/new_resource.dart';
 import 'package:devpedia/screens/dashboard_screen.dart';
-import 'package:devpedia/screens/login_screen.dart';
-// import 'package:devpedia/utils/alert_dialog.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -36,21 +35,19 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      // home: FlutterSplashScreen.gif(
-      //   gifPath: 'assets/devpedia_logo.png',
-      //   gifWidth: 269,
-      //   gifHeight: 474,
-      //   nextScreen: const MyHomePage(),
-      //   duration: const Duration(milliseconds: 1000),
-      //   onInit: () async {
-      //     debugPrint("onInit");
-      //   },
-      //   onEnd: () async {
-      //     debugPrint("onEnd 1");
-      //   },
-      // ),
-
-      home: LoginForm(),
+      home: FlutterSplashScreen.gif(
+        gifPath: 'assets/devpedia_logo.png',
+        gifWidth: 269,
+        gifHeight: 474,
+        nextScreen: const MyHomePage(),
+        duration: const Duration(milliseconds: 1000),
+        onInit: () async {
+          debugPrint("onInit");
+        },
+        onEnd: () async {
+          debugPrint("onEnd 1");
+        },
+      ),
     );
   }
 }
@@ -72,7 +69,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
         if (data != null && data.emailVerified) {
           return const DashboardScreen();
         } else {
-          return LoginScreen();
+          return const LoginRegister();
         }
       },
       error: (error, stackTrace) {
