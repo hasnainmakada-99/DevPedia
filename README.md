@@ -1,6 +1,6 @@
 # DevPedia: Empowering DevOps Learning
 
-![](assets/20240529_143803_1.svg)
+![](assets/20240529_144435_output.png)
 
 DevPedia is an innovative educational platform designed to empower both beginners and seasoned professionals in the exciting realm of DevOps tools and methodologies. We offer a comprehensive library of video resources, along with engaging features like a planned live coding playground for testing YAML code, to create a truly immersive learning experience.
 
