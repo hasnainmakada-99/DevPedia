@@ -1,14 +1,15 @@
-# DevPedia: Empowering DevOps Learning
+ <h1 align="center"> DevPedia: Empowering DevOps Learning  </h1>
 
+<p align="center">
+  <img src="https://github.com/hasnainmakada-99/DevPedia/assets/82728823/e11ec9f1-23f8-4ee4-8452-5ea5f70228a9" />
+</p>
 
-![](assets/20240529_144652_1.svg)
-
-DevPedia is an innovative educational platform designed to empower both beginners and seasoned professionals in the exciting realm of DevOps tools and methodologies. We offer a comprehensive library of video resources, along with engaging features like a planned live coding playground for testing YAML code, to create a truly immersive learning experience.
+DevPedia is an innovative educational platform designed to empower both beginners and seasoned professionals in the exciting realm of DevOps tools and methodologies. We offer a comprehensive library of video resources and engaging features like a planned live coding playground for testing YAML code to create a truly immersive learning experience.
 
 ## Features
 
 - **Extensive Video Library**: Dive into a vast collection of videos covering a wide spectrum of DevOps tools and methodologies. These resources are meticulously crafted to cater to users of all skill levels.
-- **Real-time AI Chatbot**: Powered by the cutting-edge Gemini technology, our AI chatbot provides instant assistance by answering your queries directly related to the topics you're exploring in the videos. This interactive feature enhances your learning journey by offering immediate support and clarification.
+- **Real-time AI Chatbot**: Powered by cutting-edge Gemini technology, our AI chatbot provides instant assistance by answering your queries directly related to the topics you're exploring in the videos. This interactive feature enhances your learning journey by offering immediate support and clarification.
 - **Secure User Authentication**: We prioritize user data security. Secure and reliable user authentication and verification are managed through Firebase, ensuring a safe and protected environment for your interactions on the platform.
 
 ## Future Plans
