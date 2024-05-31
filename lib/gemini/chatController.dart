@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:devpedia/chat/test_chat.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 
 import 'package:uuid/uuid.dart';
 
@@ -17,15 +19,17 @@ class ChatController extends StateNotifier<ChatState> {
 
   final Ref ref;
 
-  // final geminiService = GoogleGemini(
-  //   apiKey: '',
-  // );
+  final model = GenerativeModel(
+    model: 'gemini-1.5-flash',
+    apiKey: 'AIzaSyCHmrIMLrf-xKMC2NNFn5iV3Z5GK8UDW9U',
+  );
+
   final uuid = const Uuid();
 
   Future<void> fromText(String query) async {
     state = state.copyWith(loading: true);
     query = query.trim(); // Ignore leading and trailing whitespaces
-
+    final content = [Content.text(query)];
     try {
       final timestamp = DateTime.now();
 
@@ -39,7 +43,7 @@ class ChatController extends StateNotifier<ChatState> {
       });
 
       // Generate response using Gemini
-      // final response = await geminiService.generateFromText(query);
+      final response = await model.generateContent(content);
 
       // Store Gemini response
       await FirebaseFirestore.instance.collection('chats').add({
@@ -47,6 +51,7 @@ class ChatController extends StateNotifier<ChatState> {
         'role': 'DevAi',
         // 'text': response.text,
         'timestamp': timestamp,
+        'text': response.text,
         // Reference the user's query document
         'parent': userDocRef,
       });

@@ -1,5 +1,5 @@
-import 'package:devpedia/auth/auth_provider.dart';
-import 'package:devpedia/auth/cloud_provider.dart';
+import 'package:devpedia/auth%20and%20cloud/auth_provider.dart';
+import 'package:devpedia/auth%20and%20cloud/cloud_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

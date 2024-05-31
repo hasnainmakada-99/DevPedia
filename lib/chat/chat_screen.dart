@@ -1,4 +1,4 @@
-import 'package:devpedia/auth/auth_provider.dart';
+import 'package:devpedia/auth%20and%20cloud/auth_provider.dart';
 import 'package:devpedia/gemini/chatController.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_riverpod/flutter_riverpod.dart';

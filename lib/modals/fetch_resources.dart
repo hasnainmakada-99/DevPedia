@@ -6,21 +6,42 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Future<List<ResourceModal>> fetchVideos() async {
   var dio = Dio();
-  final response =
-      await dio.get('http://devpedia-uqxf.onrender.com/api/get-resources');
+  SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  if (response.statusCode == 200) {
-    // If the server returns a 200 OK response, parse the JSON.
-    Iterable list = response.data;
+  // Retrieve the last fetch time from cache
+  final lastFetchTime = prefs.getString('lastFetchTime');
 
-    // Save the data to the cache
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('cachedVideos', jsonEncode(list));
+  // Add a custom header for conditional requests
+  var headers = {
+    'If-Modified-Since': lastFetchTime ?? '',
+  };
 
-    return list.map((model) => ResourceModal.fromJson(model)).toList();
-  } else {
-    // If the server returns an unsuccessful response code, throw an exception.
-    throw Exception('Failed to load videos');
+  try {
+    final response = await dio.get(
+      'http://devpedia-uqxf.onrender.com/api/get-resources',
+      options: Options(headers: headers),
+    );
+
+    if (response.statusCode == 200) {
+      // If the server returns a 200 OK response, parse the JSON.
+      Iterable list = response.data;
+
+      // Save the data to the cache
+      prefs.setString('cachedVideos', jsonEncode(list));
+      prefs.setString(
+          'lastFetchTime', DateTime.now().toUtc().toIso8601String());
+
+      return list.map((model) => ResourceModal.fromJson(model)).toList();
+    } else if (response.statusCode == 304) {
+      // If the server returns a 304 Not Modified response, return cached data
+      return loadCachedVideos();
+    } else {
+      throw Exception('Failed to load videos');
+    }
+  } catch (error) {
+    // On any error, return cached data if available
+    print('Error fetching data: $error');
+    return loadCachedVideos();
   }
 }
 

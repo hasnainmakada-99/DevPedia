@@ -1,4 +1,4 @@
-import 'package:devpedia/auth/auth_provider.dart';
+import 'package:devpedia/auth%20and%20cloud/auth_provider.dart';
 import 'package:devpedia/random_code/login_register.dart';
 
 import 'package:devpedia/resources%20screens/all_resources.dart';

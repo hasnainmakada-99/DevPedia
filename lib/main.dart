@@ -1,5 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:devpedia/auth/auth_provider.dart';
+import 'package:devpedia/auth%20and%20cloud/auth_provider.dart';
+import 'package:devpedia/chat/test_chat.dart';
 
 import 'package:devpedia/firebase_options.dart';
 import 'package:devpedia/random_code/login_register.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

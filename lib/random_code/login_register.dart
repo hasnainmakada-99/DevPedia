@@ -1,4 +1,4 @@
-import 'package:devpedia/auth/auth_provider.dart';
+import 'package:devpedia/auth%20and%20cloud/auth_provider.dart';
 import 'package:devpedia/random_code/forgot_pass.dart';
 import 'package:devpedia/screens/dashboard_screen.dart';
 import 'package:devpedia/utils/alert_dialog.dart';

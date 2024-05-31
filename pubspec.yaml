@@ -49,6 +49,7 @@ dependencies:
   shared_preferences: any
   url_launcher: any
   uuid: ^4.3.3
+  google_generative_ai: ^0.4.2
 
 dev_dependencies:
   flutter_lints: ^2.0.0
