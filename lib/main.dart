@@ -1,9 +1,9 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:devpedia/auth%20and%20cloud/auth_provider.dart';
-import 'package:devpedia/chat/test_chat.dart';
+import 'package:devpedia/screens/chat_screen.dart';
 
 import 'package:devpedia/firebase_options.dart';
-import 'package:devpedia/random_code/login_register.dart';
+import 'package:devpedia/screens/login_register.dart';
 
 import 'package:devpedia/screens/dashboard_screen.dart';
 
@@ -37,19 +37,6 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      // home: FlutterSplashScreen.gif(
-      //   gifPath: 'assets/devpedia_logo.png',
-      //   gifWidth: 269,
-      //   gifHeight: 474,
-      //   nextScreen: const MyHomePage(),
-      //   duration: const Duration(milliseconds: 1000),
-      //   onInit: () async {
-      //     debugPrint("onInit");
-      //   },
-      //   onEnd: () async {
-      //     debugPrint("onEnd 1");
-      //   },
-
       home: AnimatedSplashScreen(
         splash: SvgPicture.asset(
           'assets/1.svg',

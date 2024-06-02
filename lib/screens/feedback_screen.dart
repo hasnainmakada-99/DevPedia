@@ -1,5 +1,6 @@
 import 'package:devpedia/auth%20and%20cloud/auth_provider.dart';
 import 'package:devpedia/auth%20and%20cloud/cloud_provider.dart';
+import 'package:devpedia/utils/showAlert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -87,11 +88,11 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
                   }
 
                   if (isfeedbackProvided) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Feedback provided successfully'),
-                      ),
-                    );
+                    showAlert(context, "Thanks for your valuable feedback!");
+                    setState(() {
+                      ratings = 0.0;
+                      feedbackController.clear();
+                    });
                   }
                 },
                 child: const Text('Submit Feedback'),

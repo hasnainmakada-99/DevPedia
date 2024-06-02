@@ -155,8 +155,8 @@
 // Testing Area
 
 import 'package:devpedia/auth%20and%20cloud/auth_provider.dart';
-import 'package:devpedia/chat/test_chat.dart';
-import 'package:devpedia/others/feedback_screen.dart';
+import 'package:devpedia/screens/chat_screen.dart';
+import 'package:devpedia/screens/feedback_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -306,8 +306,10 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo>
                             textStyle: const TextStyle(fontSize: 16),
                             backgroundColor: Colors.blue,
                           ),
-                          child: const Text('Give Feedback on this Resource',
-                              style: TextStyle(color: Colors.white)),
+                          child: const Text(
+                            'Give Feedback on this Resource',
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                       ],
                     );

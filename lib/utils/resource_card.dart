@@ -1,6 +1,5 @@
-import 'package:devpedia/resources%20screens/resource_info.dart';
-import 'package:devpedia/utils/shareResource_func.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ResourceCard extends StatelessWidget {
   final String imageUrl;
@@ -84,7 +83,9 @@ class ResourceCard extends StatelessWidget {
                           style: TextStyle(color: Colors.blue),
                         ),
                         onPressed: () async {
-                          await shareResource(title, shareLink);
+                          await Share.share(
+                            'Check out this resource: $title\n $shareLink\n ',
+                          );
                         },
                       ),
                       TextButton(
