@@ -4,11 +4,11 @@ class Courses {
   final String courseId;
   final String title;
   final String description;
-  final String instructorId;
-  final double price;
+  // final String instructorId;
+  // final double price;
   final String thumbnail;
   final String url;
-  final DateTime publishedDate;
+  final String publishedDate;
   final String channelName;
   final String toolRelatedTo;
 
@@ -16,8 +16,8 @@ class Courses {
     required this.courseId,
     required this.title,
     required this.description,
-    required this.instructorId,
-    required this.price,
+    // required this.instructorId,
+    // required this.price,
     required this.thumbnail,
     required this.url,
     required this.publishedDate,
@@ -26,14 +26,14 @@ class Courses {
   });
 
   factory Courses.fromJson(Map<String, dynamic> json) => Courses(
-        courseId: json['courseId'] as String,
+        courseId: json['_id'] as String,
         title: json['title'] as String,
         description: json['description'] as String,
-        instructorId: json['instructorId'] as String,
-        price: json['price'] as double,
+        // instructorId: json['instructorId'] as String,
+        // price: json['price'] as double,
         thumbnail: json['thumbnail'] as String,
         url: json['url'] as String,
-        publishedDate: (json['publishedDate'] as Timestamp).toDate(),
+        publishedDate: json['publishedDate'],
         channelName: json['channelName'] as String,
         toolRelatedTo: json['toolRelatedTo'] as String,
       );
@@ -42,8 +42,8 @@ class Courses {
         'courseId': courseId,
         'title': title,
         'description': description,
-        'instructorId': instructorId,
-        'price': price,
+        // 'instructorId': instructorId,
+        // 'price': price,
         'thumbnail': thumbnail,
         'url': url,
         'publishedDate': publishedDate,
