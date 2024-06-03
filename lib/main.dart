@@ -1,4 +1,5 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:devpedia/Testing%20Designs/testing_resource_info.dart';
 import 'package:devpedia/auth%20and%20cloud/auth_provider.dart';
 import 'package:devpedia/screens/chat_screen.dart';
 
