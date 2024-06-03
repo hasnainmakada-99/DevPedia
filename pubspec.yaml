@@ -72,7 +72,7 @@ flutter:
     - assets/random_image.webp
     - assets/devpedia_splash.gif
     - assets/1.svg
-    - assets/2.png
+    - assets/2.svg
     - assets/google_logo.webp
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

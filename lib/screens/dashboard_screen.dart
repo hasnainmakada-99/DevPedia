@@ -272,7 +272,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               ),
               accountName: Text(
                 authStateChangesNotifier.value?.displayName ?? '',
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
               ),
               accountEmail: Text(
                 authStateChangesNotifier.value?.email ?? '',

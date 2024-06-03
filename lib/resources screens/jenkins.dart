@@ -1,3 +1,4 @@
+import 'package:devpedia/modals/course_modal.dart';
 import 'package:devpedia/modals/fetch_resources.dart';
 import 'package:devpedia/modals/resource_modal.dart';
 import 'package:devpedia/resources screens/resource_info.dart';
@@ -14,16 +15,16 @@ class JenkinsResources extends ConsumerStatefulWidget {
 }
 
 class _JenkinsResourcesState extends ConsumerState<JenkinsResources> {
-  late final Future<List<ResourceModal>> resources;
+  late final Future<List<Courses>> resources;
   @override
   void initState() {
     super.initState();
-    resources = fetchVideos();
+    resources = fetchCourses();
   }
 
   Future<void> refreshVideos() async {
     setState(() {
-      resources = fetchVideos();
+      resources = fetchCourses();
     });
   }
 
@@ -31,13 +32,13 @@ class _JenkinsResourcesState extends ConsumerState<JenkinsResources> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: refreshVideos,
-      child: FutureBuilder<List<ResourceModal>>(
+      child: FutureBuilder<List<Courses>>(
         future: resources,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final jenkinsResources = snapshot.data!
                 .where((resource) =>
-                    resource.tool?.trim().toLowerCase() == 'jenkins')
+                    resource.toolRelatedTo.trim().toLowerCase() == 'jenkins')
                 .toList();
 
             if (jenkinsResources.isNotEmpty) {
@@ -51,7 +52,8 @@ class _JenkinsResourcesState extends ConsumerState<JenkinsResources> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => ResourceInfo(
-                            resourceRelatedTo: snapshotData.tool.toString(),
+                            resourceRelatedTo:
+                                snapshotData.toolRelatedTo.toString(),
                             channelName: snapshotData.channelName.toString(),
                             publishedDate:
                                 snapshotData.publishedDate.toString(),
