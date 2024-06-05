@@ -1,5 +1,5 @@
 // import 'package:devpedia/auth%20and%20cloud/auth_provider.dart';
-// import 'package:devpedia/random_code/forgot_pass.dart';
+// import 'package:devpedia/screens/forgot_pass.dart';
 // import 'package:devpedia/screens/dashboard_screen.dart';
 // import 'package:devpedia/utils/alert_dialog.dart';
 // import 'package:devpedia/utils/showAlert.dart';
@@ -19,10 +19,11 @@
 //   TextEditingController loginEmailController = TextEditingController();
 //   TextEditingController loginPasswordController = TextEditingController();
 //   bool isLoading = false;
+//   bool isGoogleLoading = false;
 //   TextEditingController registerEmailController = TextEditingController();
 //   TextEditingController registerPasswordController = TextEditingController();
 //   TextEditingController confirmPasswordController = TextEditingController();
-//   // final authState = ref.watch(authRepositoryProvider);
+
 //   void _handleLogin() async {
 //     setState(() {
 //       isLoading = true;
@@ -54,11 +55,56 @@
 //         context: context,
 //         builder: (BuildContext context) {
 //           return AlertDialog(
-//             title: Text('Error'),
+//             title: const Text('Error'),
 //             content: Text(e.toString()),
 //             actions: [
 //               TextButton(
-//                 child: Text('OK'),
+//                 child: const Text('OK'),
+//                 onPressed: () {
+//                   Navigator.of(context).pop();
+//                 },
+//               ),
+//             ],
+//           );
+//         },
+//       );
+//     }
+//   }
+
+//   Future<void> _handleGoogleSignIn() async {
+//     setState(() {
+//       isGoogleLoading = true;
+//     });
+
+//     try {
+//       await ref.read(authRepositoryProvider).signInWithGoogle();
+
+//       setState(() {
+//         isGoogleLoading = false;
+//       });
+
+//       Navigator.pushAndRemoveUntil(
+//         context,
+//         MaterialPageRoute(
+//           builder: (context) => const DashboardScreen(),
+//         ),
+//         (route) => false,
+//       );
+//     } catch (e) {
+//       setState(() {
+//         isGoogleLoading = false;
+//       });
+
+//       showDialog(
+//         // ignore: use_build_context_synchronously
+//         context: context,
+//         builder: (BuildContext context) {
+//           return AlertDialog(
+//             title: const Text('Error'),
+//             content: Text(e.toString()),
+//             actions: [
+//               TextButton(
+//                 child: const Text('OK'),
 //                 onPressed: () {
 //                   Navigator.of(context).pop();
 //                 },
@@ -212,7 +258,79 @@
 //                                 ),
 //                               );
 //                             },
-//                             child: const Text('Forgot password?'),
+//                             child: const Text(
+//                               'Forgot password?',
+//                               style: TextStyle(
+//                                 color: Colors.blue,
+//                               ),
+//                             ),
+//                           ),
+//                         ),
+//                         const SizedBox(height: 16),
+//                         SizedBox(
+//                           width: 300,
+//                           child: ElevatedButton(
+//                             onPressed: isLoading ? null : _handleLogin,
+//                             style: ElevatedButton.styleFrom(
+//                               padding:
+//                                   const EdgeInsets.symmetric(vertical: 16.0),
+//                               shape: RoundedRectangleBorder(
+//                                 borderRadius: BorderRadius.circular(8),
+//                                 side: const BorderSide(color: Colors.black),
+//                               ),
+//                               backgroundColor:
+//                                   Color.fromARGB(255, 224, 219, 219),
+//                             ),
+//                             child: isLoading
+//                                 ? const CircularProgressIndicator()
+//                                 : const Text(
+//                                     'Sign in',
+//                                     style: TextStyle(
+//                                       color: Colors.black,
+//                                       fontSize: 18,
+//                                     ),
+//                                   ),
+//                           ),
+//                         ),
+//                         const SizedBox(height: 8),
+//                         const Text('or'),
+//                         const SizedBox(height: 8),
+//                         SizedBox(
+//                           width: 300,
+//                           height: 80,
+//                           child: ElevatedButton.icon(
+//                             onPressed:
+//                                 isGoogleLoading ? null : _handleGoogleSignIn,
+//                             icon: isGoogleLoading
+//                                 ? const CircularProgressIndicator(
+//                                     valueColor: AlwaysStoppedAnimation<Color>(
+//                                       Colors.white,
+//                                     ),
+//                                   )
+//                                 : Image.asset(
+//                                     'assets/google_logo.webp',
+//                                     height: 50.0,
+//                                     width: 50.0,
+//                                   ),
+//                             label: isGoogleLoading
+//                                 ? const SizedBox.shrink()
+//                                 : const Text(
+//                                     'Sign in with Gmail   ',
+//                                     style: TextStyle(
+//                                       color: Colors.black,
+//                                       fontSize: 18,
+//                                     ),
+//                                   ),
+//                             style: ElevatedButton.styleFrom(
+//                               padding:
+//                                   const EdgeInsets.symmetric(vertical: 16.0),
+//                               shape: RoundedRectangleBorder(
+//                                 borderRadius: BorderRadius.circular(8),
+//                                 side: const BorderSide(color: Colors.black),
+//                               ),
+//                               backgroundColor:
+//                                   Color.fromARGB(255, 224, 219, 219),
+//                             ),
 //                           ),
 //                         ),
 //                       ],
@@ -251,36 +369,36 @@
 //                             ),
 //                           ),
 //                         ),
+//                         const SizedBox(height: 16),
+//                         SizedBox(
+//                           width: 300,
+//                           child: ElevatedButton(
+//                             onPressed: isLoading
+//                                 ? null
+//                                 : () {
+//                                     _handleRegister(context);
+//                                   },
+//                             style: ElevatedButton.styleFrom(
+//                               padding:
+//                                   const EdgeInsets.symmetric(vertical: 16.0),
+//                               shape: RoundedRectangleBorder(
+//                                 borderRadius: BorderRadius.circular(8),
+//                                 side: const BorderSide(color: Colors.black),
+//                               ),
+//                               backgroundColor:
+//                                   Color.fromARGB(255, 224, 219, 219),
+//                             ),
+//                             child: isLoading
+//                                 ? const CircularProgressIndicator()
+//                                 : const Text(
+//                                     'Register',
+//                                     style: TextStyle(
+//                                         color: Colors.black, fontSize: 18),
+//                                   ),
+//                           ),
+//                         ),
 //                       ],
 //                     ),
-//                   const SizedBox(height: 15),
-//                   ElevatedButton(
-//                     onPressed: () {
-//                       if (isNewUser) {
-//                         _handleRegister(context);
-//                       } else {
-//                         _handleLogin();
-//                       }
-//                     },
-//                     style: ElevatedButton.styleFrom(
-//                       minimumSize: const Size(double.infinity, 50),
-//                       backgroundColor: Colors.black,
-//                       shape: RoundedRectangleBorder(
-//                         borderRadius: BorderRadius.circular(8),
-//                       ),
-//                     ),
-//                     child: isLoading
-//                         ? const SizedBox(
-//                             width: 20,
-//                             height: 20,
-//                             child: CircularProgressIndicator(),
-//                           )
-//                         : Text(
-//                             isNewUser ? 'Sign Up' : 'Sign In',
-//                             style: const TextStyle(color: Colors.white),
-//                           ),
-//                   ),
-//                   const SizedBox(height: 16),
 //                 ],
 //               ),
 //             ),
@@ -291,7 +409,10 @@
 //   }
 // }
 
-// GOOGLE SIGN IN TESTING CODE
+// Testing Code
+
+import 'dart:io';
+import 'dart:developer';
 
 import 'package:devpedia/auth%20and%20cloud/auth_provider.dart';
 import 'package:devpedia/screens/forgot_pass.dart';
@@ -301,6 +422,10 @@ import 'package:devpedia/utils/showAlert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hl_image_picker/hl_image_picker.dart';
+
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class LoginRegister extends ConsumerStatefulWidget {
   const LoginRegister({super.key});
@@ -318,6 +443,32 @@ class _LoginFormState extends ConsumerState<LoginRegister> {
   TextEditingController registerEmailController = TextEditingController();
   TextEditingController registerPasswordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+  var _imageFile;
+  final _picker = HLImagePicker();
+
+  // _pickImage() async {
+  //   final status = await Permission.storage.request();
+
+  //   if (status.isGranted) {
+  //     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+  //     setState(() {
+  //       _imageFile = pickedFile;
+  //     });
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //         content: Text('File Storage Permission denied!'),
+  //       ),
+  //     );
+  //   }
+  // }
+
+  _pickeImage() async {
+    final images = await _picker.openPicker();
+    setState(() {
+      _imageFile = images.first;
+    });
+  }
 
   void _handleLogin() async {
     setState(() {
@@ -447,6 +598,7 @@ class _LoginFormState extends ConsumerState<LoginRegister> {
         await ref.read(authRepositoryProvider).signUp(
               email,
               password,
+              _imageFile,
               ref,
             );
 
@@ -663,6 +815,23 @@ class _LoginFormState extends ConsumerState<LoginRegister> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
+                        ),
+                        const SizedBox(height: 16),
+                        GestureDetector(
+                          onTap: _pickeImage,
+                          child: _imageFile == null
+                              ? Container(
+                                  width: 100,
+                                  height: 100,
+                                  color: Colors.grey[300],
+                                  child: const Icon(Icons.add_a_photo),
+                                )
+                              : Image.file(
+                                  File(_imageFile!.path),
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                ),
                         ),
                         const SizedBox(height: 16),
                         SizedBox(

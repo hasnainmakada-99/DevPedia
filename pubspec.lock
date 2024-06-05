@@ -241,6 +241,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.17.0"
+  firebase_storage:
+    dependency: "direct main"
+    description:
+      name: firebase_storage
+      sha256: "2ae478ceec9f458c1bcbf0ee3e0100e4e909708979e83f16d5d9fba35a5b42c1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "11.7.7"
+  firebase_storage_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_storage_platform_interface
+      sha256: "4e18662e6a66e2e0e181c06f94707de06d5097d70cfe2b5141bf64660c5b5da9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.1.22"
+  firebase_storage_web:
+    dependency: transitive
+    description:
+      name: firebase_storage_web
+      sha256: "3a44aacd38a372efb159f6fe36bb4a7d79823949383816457fd43d3d47602a53"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.9.7"
   fixnum:
     dependency: transitive
     description:
@@ -400,6 +424,38 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.10.2+1"
+  hl_image_picker:
+    dependency: "direct main"
+    description:
+      name: hl_image_picker
+      sha256: a7455f51259941922ec23e87cccf99c8e54d9a13249d56d7184866622c563021
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.16"
+  hl_image_picker_android:
+    dependency: transitive
+    description:
+      name: hl_image_picker_android
+      sha256: d274e74d313d0fd40edd2820e02cf8b492e98ef965e96bd63d3089ce9008523b
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.11"
+  hl_image_picker_ios:
+    dependency: transitive
+    description:
+      name: hl_image_picker_ios
+      sha256: "70ef73e2736514c1a5f53d97086fdce00e5b01ec002435daeafc406450123e1f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.10"
+  hl_image_picker_platform_interface:
+    dependency: transitive
+    description:
+      name: hl_image_picker_platform_interface
+      sha256: "8b9510ca6f12f80184368661738dde1c6b78fdbca04e835f2c2e0bb79f2a175b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.4"
   html:
     dependency: transitive
     description:
@@ -600,6 +656,54 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.1"
+  permission_handler:
+    dependency: "direct main"
+    description:
+      name: permission_handler
+      sha256: "18bf33f7fefbd812f37e72091a15575e72d5318854877e0e4035a24ac1113ecb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "11.3.1"
+  permission_handler_android:
+    dependency: transitive
+    description:
+      name: permission_handler_android
+      sha256: "8bb852cd759488893805c3161d0b2b5db55db52f773dbb014420b304055ba2c5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "12.0.6"
+  permission_handler_apple:
+    dependency: transitive
+    description:
+      name: permission_handler_apple
+      sha256: e6f6d73b12438ef13e648c4ae56bd106ec60d17e90a59c4545db6781229082a0
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.4.5"
+  permission_handler_html:
+    dependency: transitive
+    description:
+      name: permission_handler_html
+      sha256: "54bf176b90f6eddd4ece307e2c06cf977fb3973719c35a93b85cc7093eb6070d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.1"
+  permission_handler_platform_interface:
+    dependency: transitive
+    description:
+      name: permission_handler_platform_interface
+      sha256: "48d4fcf201a1dad93ee869ab0d4101d084f49136ec82a8a06ed9cfeacab9fd20"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.2.1"
+  permission_handler_windows:
+    dependency: transitive
+    description:
+      name: permission_handler_windows
+      sha256: "1a790728016f79a41216d88672dbc5df30e686e811ad4e698bfc51f76ad91f1e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.1"
   petitparser:
     dependency: transitive
     description:

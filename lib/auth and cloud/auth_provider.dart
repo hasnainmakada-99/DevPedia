@@ -1,7 +1,5 @@
 // import 'dart:developer';
-
 // import 'package:firebase_auth/firebase_auth.dart';
-
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
 
@@ -15,9 +13,9 @@
 
 // class AuthRepository {
 //   final _auth = FirebaseAuth.instance;
+//   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-//   Stream<User?> get authStateChanges => _auth
-//       .authStateChanges(); // gets the stream of user authentication state changes from firebase auth
+//   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
 //   String? get userEmail {
 //     final user = _auth.currentUser;
@@ -60,17 +58,24 @@
 
 //   Future<dynamic> signInWithGoogle() async {
 //     try {
-//       final googleProvider = GoogleAuthProvider();
-//       googleProvider.addScope('email');
-//       googleProvider.addScope('profile');
-//       await _auth.signInWithPopup(googleProvider);
+//       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+//       if (googleUser == null) {
+//         // The user canceled the sign-in
+//         return;
+//       }
+//       final GoogleSignInAuthentication googleAuth =
+//           await googleUser.authentication;
+//       final AuthCredential credential = GoogleAuthProvider.credential(
+//         accessToken: googleAuth.accessToken,
+//         idToken: googleAuth.idToken,
+//       );
+//       await _auth.signInWithCredential(credential);
 //     } on FirebaseAuthException catch (e) {
 //       rethrow;
 //     } catch (e) {
 //       log(e.toString());
 //       rethrow;
 //     }
-
 //   }
 
 //   Future<dynamic> forgotPassword(String email) async {
@@ -87,6 +92,7 @@
 //   Future<void> signOut() async {
 //     try {
 //       await _auth.signOut();
+//       await _googleSignIn.signOut(); // Ensure Google sign-out
 //     } on FirebaseAuthException catch (e) {
 //       log(e.toString());
 //     } catch (e) {
@@ -95,10 +101,15 @@
 //   }
 // }
 
+// Testing Code
+
 import 'dart:developer';
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+// import 'package:image_picker/image_picker.dart';
 
 final authRepositoryProvider = Provider<AuthRepository>(
   (ref) => AuthRepository(),
@@ -119,7 +130,8 @@ class AuthRepository {
     return user?.email;
   }
 
-  Future<void> signUp(String email, String password, WidgetRef ref) async {
+  Future<void> signUp(
+      String email, String password, dynamic imageFile, WidgetRef ref) async {
     try {
       await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -128,6 +140,21 @@ class AuthRepository {
       User? user = _auth.currentUser;
       if (user != null && !user.emailVerified) {
         await user.sendEmailVerification();
+      }
+
+      if (user != null && imageFile != null) {
+        // Upload the image to Firebase Storage
+        final storageRef = FirebaseStorage.instance
+            .ref()
+            .child('user_profiles')
+            .child(user.uid);
+        await storageRef.putFile(File(imageFile.path));
+
+        // Get the download URL
+        final imageUrl = await storageRef.getDownloadURL();
+
+        // Update the user's profile with the image URL
+        await user.updateProfile(photoURL: imageUrl);
       }
     } catch (e) {
       log(e.toString());
