@@ -1,5 +1,3 @@
- <h1 align="center"> DevPedia: Empowering DevOps Learning  </h1>
-
 <p align="center">
   <img src="https://github.com/hasnainmakada-99/DevPedia/assets/82728823/e11ec9f1-23f8-4ee4-8452-5ea5f70228a9" />
 </p>
