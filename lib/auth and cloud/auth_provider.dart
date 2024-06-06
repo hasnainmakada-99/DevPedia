@@ -1,5 +1,3 @@
-// Testing Code
-
 import 'dart:developer';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -34,7 +32,9 @@ class AuthRepository {
     try {
       // Create user with email and password
       await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+        email: email,
+        password: password,
+      );
       User? firebaseUser = _auth.currentUser;
 
       // Send email verification
@@ -104,28 +104,6 @@ class AuthRepository {
     }
   }
 
-  // Future<dynamic> signInWithGoogle() async {
-  //   try {
-  //     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-  //     if (googleUser == null) {
-  //       // The user canceled the sign-in
-  //       return;
-  //     }
-  //     final GoogleSignInAuthentication googleAuth =
-  //         await googleUser.authentication;
-  //     final AuthCredential credential = GoogleAuthProvider.credential(
-  //       accessToken: googleAuth.accessToken,
-  //       idToken: googleAuth.idToken,
-  //     );
-  //     await _auth.signInWithCredential(credential);
-  //   } on FirebaseAuthException catch (e) {
-  //     rethrow;
-  //   } catch (e) {
-  //     log(e.toString());
-  //     rethrow;
-  //   }
-  // }
-
   Future<void> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
@@ -167,6 +145,7 @@ class AuthRepository {
         }
       }
     } on FirebaseAuthException catch (e) {
+      log(e.toString());
       rethrow;
     } catch (e) {
       log(e.toString());
