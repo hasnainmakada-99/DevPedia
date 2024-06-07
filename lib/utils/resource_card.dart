@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:devpedia/auth%20and%20cloud/auth_provider.dart';
+import 'package:devpedia/auth%20and%20cloud/cloud_provider.dart';
+import 'package:devpedia/modals/enrollments_modal.dart';
+import 'package:uuid/uuid.dart';
 
-class ResourceCard extends StatelessWidget {
+class ResourceCard extends ConsumerStatefulWidget {
   final String imageUrl;
   final String title;
   final String description;
   final String shareLink;
-
+  final String courseId;
   final Function navigateTo;
 
   const ResourceCard({
@@ -15,8 +20,50 @@ class ResourceCard extends StatelessWidget {
     required this.title,
     required this.description,
     required this.shareLink,
+    required this.courseId,
     required this.navigateTo,
   }) : super(key: key);
+
+  @override
+  _ResourceCardState createState() => _ResourceCardState();
+}
+
+class _ResourceCardState extends ConsumerState<ResourceCard> {
+  bool _isEnrolled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkEnrollmentStatus();
+  }
+
+  Future<void> _checkEnrollmentStatus() async {
+    final user = ref.read(authStateChangesProvider).value;
+    if (user != null) {
+      final isEnrolled = await ref
+          .read(cloudProvider)
+          .checkEnrollment(widget.courseId, user.uid);
+      setState(() {
+        _isEnrolled = isEnrolled;
+      });
+    }
+  }
+
+  Future<void> _enrollInCourse() async {
+    final user = ref.read(authStateChangesProvider).value;
+    if (user != null) {
+      final enrollment = Enrollment(
+        enrollmentId: const Uuid().v4(),
+        courseId: widget.courseId,
+        studentId: user.uid,
+        enrollmentDate: DateTime.now(),
+      );
+      await ref.read(cloudProvider).enrollInCourse(enrollment);
+      setState(() {
+        _isEnrolled = true;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,18 +74,17 @@ class ResourceCard extends StatelessWidget {
       ),
       clipBehavior: Clip.antiAliasWithSaveLayer,
       elevation: 5,
-      child: InkWell(
-        onTap: () => navigateTo(),
+      child: GestureDetector(
+        onTap: _isEnrolled ? () => widget.navigateTo() : null,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Image.network(
-              imageUrl,
+              widget.imageUrl,
               height: 160,
               width: double.infinity,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) {
-                // Handle image loading errors (e.g., show placeholder)
                 return Container(
                   height: 160,
                   width: double.infinity,
@@ -55,7 +101,7 @@ class ResourceCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    title,
+                    widget.title,
                     style: TextStyle(
                       fontSize: 24,
                       color: Colors.grey[800],
@@ -63,9 +109,9 @@ class ResourceCard extends StatelessWidget {
                   ),
                   Container(height: 10),
                   Text(
-                    description.length > 60
-                        ? '${description.substring(0, 60)}...'
-                        : description,
+                    widget.description.length > 60
+                        ? '${widget.description.substring(0, 60)}...'
+                        : widget.description,
                     style: TextStyle(
                       fontSize: 15,
                       color: Colors.grey[700],
@@ -84,23 +130,27 @@ class ResourceCard extends StatelessWidget {
                         ),
                         onPressed: () async {
                           await Share.share(
-                            'Check out this resource: $title\n $shareLink\n ',
+                            'Check out this resource: ${widget.title}\n ${widget.shareLink}\n ',
                           );
                         },
                       ),
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          foregroundColor: Colors.transparent,
-                        ),
-                        child: const Text(
-                          "EXPLORE",
-                          style: TextStyle(color: Colors.blue),
-                        ),
-                        onPressed: () {
-                          navigateTo();
-                          // Handle explore action
-                        },
-                      ),
+                      _isEnrolled
+                          ? const Text(
+                              "In Progress",
+                              style: TextStyle(color: Colors.green),
+                            )
+                          : TextButton(
+                              style: TextButton.styleFrom(
+                                foregroundColor: Colors.transparent,
+                              ),
+                              child: const Text(
+                                "ENROLL",
+                                style: TextStyle(color: Colors.blue),
+                              ),
+                              onPressed: () async {
+                                await _enrollInCourse();
+                              },
+                            ),
                     ],
                   ),
                 ],
@@ -108,7 +158,7 @@ class ResourceCard extends StatelessWidget {
             ),
             Container(height: 5),
           ],
-        ), // This adds the shadow to the card
+        ),
       ),
     );
   }
