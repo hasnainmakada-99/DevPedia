@@ -32,7 +32,6 @@ dependencies:
   cloud_firestore: ^4.15.5
   cupertino_icons: ^1.0.2
   dio: ^5.4.0
-  hl_image_picker: ^1.2.16
   firebase_auth: ^4.16.0
   firebase_core: ^2.24.2
   firebase_storage: any
@@ -48,7 +47,8 @@ dependencies:
   google_fonts: 6.1.0
   google_generative_ai: ^0.4.2
   google_sign_in: ^5.0.7
-
+  hl_image_picker: ^1.2.16
+  # intl: ^0.19.0
   permission_handler: ^11.3.1
   pod_player: ^0.2.2
   share_plus: any

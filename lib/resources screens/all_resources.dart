@@ -122,7 +122,7 @@
 //   }
 // }
 
-import 'package:devpedia/modals/course_modal.dart';
+import 'package:devpedia/modals/courses_modal.dart';
 import 'package:devpedia/modals/fetch_resources.dart';
 import 'package:devpedia/resources%20screens/resource_info.dart';
 import 'package:devpedia/utils/resource_card.dart';
@@ -186,10 +186,11 @@ class _AllResourcesState extends ConsumerState<AllResources> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ResourceInfo(
+                                  price: snapshotData.price,
                                   resourceRelatedTo: snapshotData.toolRelatedTo,
                                   channelName: snapshotData.channelName,
                                   publishedDate:
-                                      snapshotData.publishedDate.toString(),
+                                      snapshotData.publishedDate.toUtc(),
                                   resourceTitle: snapshotData.title,
                                   resourceURL: snapshotData.url,
                                   resourceDescription: snapshotData.description,
@@ -198,12 +199,12 @@ class _AllResourcesState extends ConsumerState<AllResources> {
                               (route) => true,
                             );
                           },
+                          price: snapshotData.price,
                           imageUrl: snapshotData.thumbnail,
                           title: snapshotData.title,
                           description: snapshotData.description,
                           shareLink: snapshotData.url,
-                          courseId:
-                              snapshotData.courseId, // Pass the courseId here
+                          courseId: snapshotData.id, // Pass the courseId here
                         );
                       },
                     );
