@@ -87,7 +87,7 @@ class Courses {
       publishedDate: DateTime.parse(json['publishedDate']),
       channelName: json['channelName'],
       toolRelatedTo: json['toolRelatedTo'],
-      price: json['price'],
+      price: int.parse(json['price']),
       v: json['__v'],
     );
   }

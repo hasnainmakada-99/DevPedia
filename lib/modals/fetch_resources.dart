@@ -70,7 +70,7 @@ Future<List<Courses>> fetchCourses({String? filter}) async {
 
   try {
     final response = await dio.get(
-      'http://192.168.0.106:3000/get-resources',
+      'https://devpedia-uqxf.onrender.com/api/get-resources',
     );
 
     if (response.statusCode == 200) {

@@ -186,7 +186,7 @@ class _AllResourcesState extends ConsumerState<AllResources> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ResourceInfo(
-                                  price: snapshotData.price,
+                                  // price: snapshotData.price,
                                   resourceRelatedTo: snapshotData.toolRelatedTo,
                                   channelName: snapshotData.channelName,
                                   publishedDate:
