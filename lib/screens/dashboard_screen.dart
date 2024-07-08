@@ -35,7 +35,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('DevPedia'),
+        title: const Text('devpedia'),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),

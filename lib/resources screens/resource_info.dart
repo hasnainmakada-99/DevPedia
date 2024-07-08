@@ -38,7 +38,6 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo>
   @override
   void initState() {
     super.initState();
-    _loadSavedPosition();
 
     controller = PodPlayerController(
       playVideoFrom: PlayVideoFrom.youtube(
@@ -48,26 +47,6 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo>
     )..initialise();
 
     _tabController = TabController(length: 2, vsync: this);
-  }
-
-  Future<void> _loadSavedPosition() async {
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
-    // final savedPosition = prefs.getInt('${widget.resourceURL}_position') ?? 0;
-
-    controller = PodPlayerController(
-      playVideoFrom: PlayVideoFrom.youtube(
-        widget.resourceURL,
-      ),
-      podPlayerConfig: const PodPlayerConfig(
-        autoPlay: false,
-      ),
-    )..initialise();
-  }
-
-  Future<void> _savePosition() async {
-    final position = controller.currentVideoPosition.inSeconds;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('${widget.resourceURL}_position', position);
   }
 
   final DateTime now = DateTime.now();
@@ -174,7 +153,6 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo>
 
   @override
   void dispose() {
-    _savePosition();
     controller.dispose();
     _tabController.dispose();
     super.dispose();

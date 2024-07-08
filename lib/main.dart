@@ -1,4 +1,5 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:devpedia/Testing%20Designs/ytPlaylistTest.dart';
 
 import 'package:devpedia/auth%20and%20cloud/auth_provider.dart';
 
@@ -38,9 +39,9 @@ class MyApp extends StatelessWidget {
       ),
       home: AnimatedSplashScreen(
         splash: SvgPicture.asset(
-          'assets/1.svg',
+          'assets/2.svg',
         ),
-        nextScreen: const MyHomePage(),
+        nextScreen: YouTubePlaylistScreen(),
         splashTransition: SplashTransition.rotationTransition,
         duration: 1000,
         splashIconSize: 150,

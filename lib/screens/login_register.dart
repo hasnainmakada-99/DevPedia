@@ -196,7 +196,7 @@
 //                 children: [
 //                   const SizedBox(height: 40),
 //                   Text(
-//                     'Welcome to DevPedia',
+//                     'Welcome to devpedia',
 //                     style: GoogleFonts.lato(
 //                       fontSize: 24,
 //                       fontWeight: FontWeight.bold,
@@ -643,7 +643,7 @@ class _LoginFormState extends ConsumerState<LoginRegister> {
                 children: [
                   const SizedBox(height: 40),
                   Text(
-                    'Welcome to DevPedia',
+                    'Welcome to devpedia',
                     style: GoogleFonts.lato(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
