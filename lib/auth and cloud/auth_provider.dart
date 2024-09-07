@@ -104,52 +104,26 @@ class AuthRepository {
     }
   }
 
-  Future<void> signInWithGoogle() async {
+  Future<User?> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser == null) {
-        // The user canceled the sign-in
-        return;
+        return null; // User canceled the sign-in
       }
+
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
+
       final UserCredential userCredential =
           await _auth.signInWithCredential(credential);
-      User? firebaseUser = userCredential.user;
-
-      if (firebaseUser != null) {
-        // Check if the user already exists in Firestore
-        final userDoc =
-            await _firestore.collection('users').doc(firebaseUser.uid).get();
-
-        if (!userDoc.exists) {
-          // Create user in Firestore
-          final newUser = user_model.User(
-            userId: firebaseUser.uid,
-            email: firebaseUser.email!,
-            role: 'student', // or determine the role dynamically
-            profilePicture: firebaseUser.photoURL ?? '',
-            bio: null,
-            createdAt: DateTime.timestamp(),
-            updatedAt: DateTime.timestamp(),
-          );
-
-          await _firestore
-              .collection('users')
-              .doc(newUser.userId)
-              .set(newUser.toJson());
-        }
-      }
-    } on FirebaseAuthException catch (e) {
-      log(e.toString());
-      rethrow;
+      return userCredential.user; // Return the signed-in user
     } catch (e) {
-      log(e.toString());
-      rethrow;
+      log('Error signing in with Google: $e');
+      return null; // Return null on error
     }
   }
 

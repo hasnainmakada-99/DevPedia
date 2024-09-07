@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         splash: SvgPicture.asset(
           'assets/2.svg',
         ),
-        nextScreen: YouTubePlaylistScreen(),
+        nextScreen: MyHomePage(),
         splashTransition: SplashTransition.rotationTransition,
         duration: 1000,
         splashIconSize: 150,
