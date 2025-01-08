@@ -1,4 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:devpedia/Testing%20Designs/pod_test1.dart';
+import 'package:devpedia/Testing%20Designs/video_player_test.dart';
 import 'package:devpedia/Testing%20Designs/ytPlaylistTest.dart';
 
 import 'package:devpedia/auth%20and%20cloud/auth_provider.dart';
@@ -13,6 +15,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:video_player/video_player.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,7 +44,7 @@ class MyApp extends StatelessWidget {
         splash: SvgPicture.asset(
           'assets/2.svg',
         ),
-        nextScreen: MyHomePage(),
+        nextScreen: const MyHomePage(),
         splashTransition: SplashTransition.rotationTransition,
         duration: 1000,
         splashIconSize: 150,
@@ -87,3 +90,11 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     );
   }
 }
+
+
+
+
+
+
+
+// testing

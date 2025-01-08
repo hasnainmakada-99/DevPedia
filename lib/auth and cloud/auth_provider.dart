@@ -106,11 +106,13 @@ class AuthRepository {
 
   Future<User?> signInWithGoogle() async {
     try {
+      // Perform Google Sign-In
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser == null) {
         return null; // User canceled the sign-in
       }
 
+      // Perform authentication
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
       final AuthCredential credential = GoogleAuthProvider.credential(
@@ -118,9 +120,12 @@ class AuthRepository {
         idToken: googleAuth.idToken,
       );
 
+      // Sign in to Firebase
       final UserCredential userCredential =
           await _auth.signInWithCredential(credential);
-      return userCredential.user; // Return the signed-in user
+      final User? firebaseUser = userCredential.user;
+
+      return firebaseUser; // Return the Firebase user object
     } catch (e) {
       log('Error signing in with Google: $e');
       return null; // Return null on error

@@ -1,15 +1,16 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'dart:math';
 
 import 'package:devpedia/auth%20and%20cloud/auth_provider.dart';
 import 'package:devpedia/screens/chat_screen.dart';
 import 'package:devpedia/screens/feedback_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:pod_player/pod_player.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class ResourceInfo extends ConsumerStatefulWidget {
+class ResourceInfo1 extends ConsumerStatefulWidget {
   final String resourceTitle;
   final String resourceURL;
   final String resourceDescription;
@@ -17,7 +18,7 @@ class ResourceInfo extends ConsumerStatefulWidget {
   final DateTime publishedDate;
   final String resourceRelatedTo;
 
-  const ResourceInfo({
+  const ResourceInfo1({
     Key? key,
     required this.resourceURL,
     required this.resourceDescription,
@@ -31,67 +32,53 @@ class ResourceInfo extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _ResourceInfoState();
 }
 
-class _ResourceInfoState extends ConsumerState<ResourceInfo>
+class _ResourceInfoState extends ConsumerState<ResourceInfo1>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  late YoutubePlayerController _youtubeController;
+  late final PodPlayerController controller;
 
   @override
   void initState() {
-    super.initState();
-
-    // Initialize YouTubePlayerController
-    _youtubeController = YoutubePlayerController(
-      initialVideoId: YoutubePlayer.convertUrlToId(widget.resourceURL) ??
-          'default_video_id', // Provide a fallback video ID
-      flags: const YoutubePlayerFlags(
-        autoPlay: false,
-        mute: false,
-        forceHD: true,
-        controlsVisibleAtStart: true,
+    controller = PodPlayerController(
+      playVideoFrom: PlayVideoFrom.youtube(
+        widget.resourceURL,
       ),
-    );
+      podPlayerConfig: const PodPlayerConfig(autoPlay: false),
+    )..initialise();
+    super.initState();
     _tabController = TabController(length: 2, vsync: this);
   }
 
+  final DateTime now = DateTime.now();
   final DateFormat formatter = DateFormat('dd/MM/yyyy');
 
   @override
   Widget build(BuildContext context) {
     final authRepositoryController = ref.watch(authRepositoryProvider);
 
-    return YoutubePlayerBuilder(
-      onExitFullScreen: () {
-        // The player forces portraitUp after exiting fullscreen. This overrides the behaviour.
-        SystemChrome.setPreferredOrientations(DeviceOrientation.values);
-      },
-      player: YoutubePlayer(
-        controller: _youtubeController,
-        showVideoProgressIndicator: true,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.resourceTitle),
       ),
-      builder: (context, player) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(widget.resourceTitle),
+      body: Column(
+        children: [
+          TabBar(
+            controller: _tabController,
+            tabs: const [
+              Tab(text: 'Video'),
+              Tab(text: "Chat"),
+            ],
           ),
-          body: Column(
-            children: [
-              TabBar(
-                controller: _tabController,
-                tabs: const [
-                  Tab(text: 'Video'),
-                  Tab(text: "Chat"),
-                ],
-              ),
-              Expanded(
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    ListView(
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                Builder(
+                  builder: (context) {
+                    return ListView(
                       padding: const EdgeInsets.all(16.0),
                       children: [
-                        // Display the YouTube Player
-                        player,
+                        PodVideoPlayer(controller: controller),
                         const SizedBox(height: 16),
                         Container(
                           padding: const EdgeInsets.all(16.0),
@@ -152,21 +139,21 @@ class _ResourceInfoState extends ConsumerState<ResourceInfo>
                           ),
                         ),
                       ],
-                    ),
-                    ChatScreen1(userEmail: authRepositoryController.userEmail!),
-                  ],
+                    );
+                  },
                 ),
-              ),
-            ],
+                ChatScreen1(userEmail: authRepositoryController.userEmail!),
+              ],
+            ),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 
   @override
   void dispose() {
-    _youtubeController.dispose();
+    controller.dispose();
     _tabController.dispose();
     super.dispose();
   }

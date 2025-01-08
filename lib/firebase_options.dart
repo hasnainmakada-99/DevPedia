@@ -27,10 +27,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.macOS:
         return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -44,37 +41,51 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyC47WA7ynyLKGRaOlj2_M3O2axDF46m9DA',
-    appId: '1:778970187906:web:fc046c04c21def51ac4c9b',
+    apiKey: 'AIzaSyAr10mLstjgQBm-yrPy4SjHMfwBYjlDdSk',
+    appId: '1:778970187906:web:b5351d0c1968326eac4c9b',
     messagingSenderId: '778970187906',
     projectId: 'devpedia-8231d',
     authDomain: 'devpedia-8231d.firebaseapp.com',
-    storageBucket: 'devpedia-8231d.appspot.com',
+    storageBucket: 'devpedia-8231d.firebasestorage.app',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCsq-wLa1OeJWoZZDeWX_ibzZrO87fSnz4',
-    appId: '1:778970187906:android:6730cd228bb3ff20ac4c9b',
+    appId: '1:778970187906:android:3d889906f0f5aae8ac4c9b',
     messagingSenderId: '778970187906',
     projectId: 'devpedia-8231d',
-    storageBucket: 'devpedia-8231d.appspot.com',
+    storageBucket: 'devpedia-8231d.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAf6DhZgMBBo7kZ1wvEJgtCVnMWQBTL3H4',
-    appId: '1:778970187906:ios:59240983ada35137ac4c9b',
+    appId: '1:778970187906:ios:836ed787a739a67bac4c9b',
     messagingSenderId: '778970187906',
     projectId: 'devpedia-8231d',
-    storageBucket: 'devpedia-8231d.appspot.com',
+    storageBucket: 'devpedia-8231d.firebasestorage.app',
+    androidClientId: '778970187906-dovu7inn12jbp3c92213qrh5e2mg9b61.apps.googleusercontent.com',
+    iosClientId: '778970187906-uli1bnltenl9k5jfa3kv9edud7lgpmgo.apps.googleusercontent.com',
     iosBundleId: 'com.example.devpedia',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyAf6DhZgMBBo7kZ1wvEJgtCVnMWQBTL3H4',
-    appId: '1:778970187906:ios:6b482117f5a2d674ac4c9b',
+    appId: '1:778970187906:ios:836ed787a739a67bac4c9b',
     messagingSenderId: '778970187906',
     projectId: 'devpedia-8231d',
-    storageBucket: 'devpedia-8231d.appspot.com',
-    iosBundleId: 'com.example.devpedia.RunnerTests',
+    storageBucket: 'devpedia-8231d.firebasestorage.app',
+    androidClientId: '778970187906-dovu7inn12jbp3c92213qrh5e2mg9b61.apps.googleusercontent.com',
+    iosClientId: '778970187906-uli1bnltenl9k5jfa3kv9edud7lgpmgo.apps.googleusercontent.com',
+    iosBundleId: 'com.example.devpedia',
   );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyAr10mLstjgQBm-yrPy4SjHMfwBYjlDdSk',
+    appId: '1:778970187906:web:7b683138472d65abac4c9b',
+    messagingSenderId: '778970187906',
+    projectId: 'devpedia-8231d',
+    authDomain: 'devpedia-8231d.firebaseapp.com',
+    storageBucket: 'devpedia-8231d.firebasestorage.app',
+  );
+
 }
